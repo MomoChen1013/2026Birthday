@@ -51,15 +51,17 @@
 
   <div class="scene-body">
 
-    <!-- ===== 上方：收集桶 ===== -->
+    <!-- ===== 上方：收集桶（Matter.js 物理） ===== -->
     <div class="cardbox cake-bucket">
       <div class="section-title">
         <span class="em">🎁</span> Momo 的生日蛋糕收集桶
         <small>已收到 <b id="bucketCount">0</b> 個蛋糕</small>
       </div>
+      <div class="bucket-lid"></div>
       <div class="bucket-body" id="bucketBody">
         <div class="bucket-empty">桶子是空的，第一個來慶生的人就是你！</div>
       </div>
+      <p class="bucket-tip">💡 滑鼠移到 / 點蛋糕，看看是誰送的</p>
     </div>
 
     <!-- ===== 下方：慶祝儀式舞台 ===== -->
@@ -109,9 +111,8 @@
       </div>
 
       <div class="step-pane" data-step="drop">
-        <h3>④ 把蛋糕收進桶子</h3>
-        <p class="step-hint">這塊蛋糕會飛進 Momo 的收集桶，並記下是「<b id="senderPreview">朋友</b>」送的</p>
-        <button class="btn" id="dropBtn">🎁 收進桶子</button>
+        <h3>④ 蛋糕飛進桶子中…</h3>
+        <p class="step-hint">記下「<b id="senderPreview">朋友</b>」送了這塊蛋糕 🎁</p>
       </div>
 
       <div class="step-pane" data-step="done">
@@ -154,6 +155,7 @@
   <button class="fab" id="bgmFab"   title="生日歌 BGM">🔇</button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/cake.js"></script>
 </body>
