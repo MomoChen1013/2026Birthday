@@ -1,0 +1,51 @@
+/* ============================================================
+   蛋糕櫃頁面 — 場景背景
+============================================================ */
+.scene-bg[data-bg="cake"]{background-image:url('../images/scene-cake.jpg');background-position:center;}
+
+/* ============================================================
+   蛋糕台
+============================================================ */
+.cake-stage{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.cake-plate{position:relative;width:220px;padding-top:30px;}
+.slice{width:180px;height:160px;margin:0 auto;border-radius:18px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,var(--primary-soft),var(--bg-blob2));
+  display:flex;align-items:center;justify-content:center;box-shadow:0 14px 26px var(--shadow),inset 0 0 0 4px #fff;}
+.slice img{width:100%;height:100%;object-fit:cover;}
+.slice .slice-ph{font-size:60px;opacity:.6;}
+.plate-base{width:210px;height:22px;margin:-6px auto 0;border-radius:50%;background:var(--accent);
+  box-shadow:0 10px 16px var(--shadow);opacity:.85;}
+.candle{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:9px;height:42px;border-radius:3px;z-index:3;
+  background:repeating-linear-gradient(45deg,#ff9ec4 0 5px,#fff 5px 10px);box-shadow:0 2px 4px rgba(0,0,0,.1);}
+.flame{position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:15px;height:22px;cursor:pointer;z-index:4;
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff6b0,#ffb13d 60%,#ff7a00);filter:drop-shadow(0 0 10px #ffb13d);
+  animation:flicker .25s ease-in-out infinite alternate;transform-origin:bottom center;}
+@keyframes flicker{from{transform:translateX(-50%) scale(1) rotate(-3deg)}to{transform:translateX(-50%) scale(1.12) rotate(3deg)}}
+.flame.out{display:none;}
+.cake-name{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--primary-deep);}
+.cake-picker{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:430px;}
+.cake-chip{font-family:var(--font-body);font-size:12.5px;padding:7px 12px;border-radius:999px;cursor:pointer;
+  background:var(--bg2);color:var(--ink-soft);border:1.5px solid transparent;transition:.2s;display:flex;align-items:center;gap:5px;}
+.cake-chip:hover{transform:translateY(-2px);}
+.cake-chip.sel{background:var(--primary-soft);color:var(--primary-deep);border-color:var(--primary);font-weight:700;}
+.wish-line{font-family:var(--font-hand);font-size:26px;color:var(--primary-deep);min-height:30px;text-align:center;}
+
+/* 慶賀按鈕 */
+.celebrate-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+.cel-btn{font-family:var(--font-display);font-size:15px;font-weight:500;border:none;cursor:pointer;padding:13px 18px;border-radius:16px;
+  background:var(--primary-soft);color:var(--primary-deep);box-shadow:0 6px 14px var(--shadow);transition:transform .15s;display:flex;align-items:center;gap:7px;}
+.cel-btn:hover{transform:translateY(-2px);}
+.cel-btn:active{transform:scale(.95);}
+
+/* 愛心集氣（愛心形狀，由下往上集滿） */
+.heart-bucket{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.heart-meter{position:relative;cursor:pointer;transition:transform .15s;filter:drop-shadow(0 10px 20px var(--shadow));}
+.heart-meter:hover{transform:translateY(-2px) scale(1.03);}
+.heart-meter:active{transform:scale(.96);}
+.heart-track{fill:var(--primary-soft);}
+.heart-fill{fill:var(--primary);opacity:.92;transition:y .7s cubic-bezier(.3,1.3,.5,1);}
+.heart-outline{fill:none;stroke:var(--primary-deep);stroke-width:5;}
+.heart-num{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:30px;
+  font-family:var(--font-display);font-weight:700;font-size:34px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.3);pointer-events:none;}
+.heart-hint{font-size:13px;color:var(--ink-soft);}

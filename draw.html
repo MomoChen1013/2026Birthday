@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🃏 抽小卡｜2026 Momo's Day</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Long+Cang&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/draw.css">
+</head>
+<body data-theme="lavender">
+
+<div class="bg-decor"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="fx"></canvas>
+
+<div class="scene-bg" data-bg="gallery"></div>
+
+<div class="me-mini" id="meMini"><span class="ic">🎀</span><span class="nm">朋友</span></div>
+
+<section class="panel page-fade" data-panel="draw">
+  <div class="scene-hero">
+    <div class="sh-title">🃏 Mo's Cards</div>
+    <div class="sh-sub">點卡片翻開・收藏你的限定小卡</div>
+    <div class="scroll-cue"><span>向下探索</span><span class="arrow">↓</span></div>
+  </div>
+
+  <div class="scene-body">
+    <div class="section-title"><span class="em">🃏</span> 抽 Momo 小卡 <small>點卡片翻開・收藏你的限定卡</small></div>
+    <div class="cardbox">
+      <div class="gacha-wrap">
+        <div class="deck">
+          <div class="photocard" id="photocard">
+            <div class="face back">M</div>
+            <div class="face front">
+              <div class="card-art" id="cardArt">🎀</div>
+              <div class="holo"></div>
+              <div class="card-meta">
+                <div class="rk" id="cardRk">★ R</div>
+                <div class="nm" id="cardNm">Momo 小卡</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn small" id="drawBtn">✦ 抽一張小卡</button>
+        <div class="draw-info">你的收藏（<span id="collCount">0</span> 張）</div>
+        <div class="collection" id="collection"></div>
+      </div>
+    </div>
+    <footer>made with ♡ for Momo・#2026 Momo's Day</footer>
+  </div>
+</section>
+
+<a class="back-lobby show" href="index.html">🏠 回到派對現場</a>
+<a class="turn-nav show" id="turnLeft"  href="exhibition.html"><span class="tn-arrow">←</span><span class="tn-label">左轉 📸展覽照片</span></a>
+<a class="turn-nav show" id="turnRight" href="quiz.html"><span class="tn-arrow">→</span><span class="tn-label">💗小測驗 右轉</span></a>
+
+<button class="owner-fab" id="ownerFab">📬 我的信箱 (<span id="ownerCount">0</span>)</button>
+<div class="letter-modal" id="inboxModal">
+  <div class="letter-card inbox-card">
+    <button class="letter-close" id="inboxClose">✕</button>
+    <h3>📬 Momo 的信箱</h3>
+    <div class="ltip">朋友寄給你的悄悄話都在這裡</div>
+    <div class="inbox-list" id="inboxList"></div>
+  </div>
+</div>
+
+<div class="floating">
+  <div class="theme-pop" id="themePop">
+    <div class="theme-dot t-lavender" data-theme="lavender" title="薰衣草紫"></div>
+    <div class="theme-dot t-sakura"   data-theme="sakura"   title="櫻花粉"></div>
+    <div class="theme-dot t-sky"      data-theme="sky"      title="晴空藍"></div>
+    <div class="theme-dot t-butter"   data-theme="butter"   title="奶油黃"></div>
+  </div>
+  <button class="fab" id="themeFab" title="換主題色">🎨</button>
+  <button class="fab" id="bgmFab"   title="生日歌 BGM">🔇</button>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/draw.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 祝福牆｜2026 Momo's Day</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Long+Cang&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/wall.css">
+</head>
+<body data-theme="lavender">
+
+<div class="bg-decor"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="fx"></canvas>
+
+<div class="scene-bg" data-bg="wishes"></div>
+
+<div class="me-mini" id="meMini"><span class="ic">🎀</span><span class="nm">朋友</span></div>
+
+<section class="panel page-fade" data-panel="wall">
+  <div class="scene-hero">
+    <div class="sh-title">💌 給 Momo 的祝福</div>
+    <div class="sh-sub">留言、寫信，把心意送到壽星手上</div>
+    <div class="scroll-cue"><span>向下探索</span><span class="arrow">↓</span></div>
+  </div>
+
+  <div class="scene-body">
+
+    <!-- 簽到祝福留言牆 -->
+    <div class="section-title"><span class="em">💌</span> 簽到祝福留言牆 <small>留下你的生日祝福</small></div>
+    <div class="cardbox">
+      <div class="wish-form">
+        <textarea id="wishText" placeholder="寫下想對 Momo 說的話…"></textarea>
+        <div style="text-align:right;margin-top:10px">
+          <button class="btn small" id="postWish">貼上祝福 ♡</button>
+        </div>
+      </div>
+      <div class="wish-wall" id="wishWall"></div>
+    </div>
+
+    <!-- 信箱 -->
+    <div class="section-title" id="mailboxSection"><span class="em">📮</span> 給 Momo 的悄悄話信箱 <small>只有壽星看得到</small></div>
+    <div class="cardbox">
+      <div class="mailbox-wrap">
+        <div class="mailbox" id="mailbox" title="寫一封信">📮</div>
+        <div class="mailbox-count">已有 <b id="letterCount">0</b> 封信飛進 Momo 的信箱</div>
+        <button class="btn small ghost" id="writeLetter">✉️ 寫一封信</button>
+      </div>
+    </div>
+
+    <footer>made with ♡ for Momo・#2026 Momo's Day</footer>
+  </div>
+</section>
+
+<!-- 悄悄話信件彈窗 -->
+<div class="letter-modal" id="letterModal">
+  <div class="letter-card">
+    <div class="wax-seal" aria-hidden="true"><span>M</span></div>
+    <button class="letter-close" id="letterClose">✕</button>
+    <h3>💌 給 Momo 的悄悄話</h3>
+    <div class="ltip">只有壽星看得到・寫完投進信箱</div>
+    <textarea id="letterText" placeholder="親愛的 Momo…"></textarea>
+    <div class="letter-actions">
+      <button class="btn ghost small" id="letterCancel">取消</button>
+      <button class="btn small"        id="letterSend">投進信箱 ✉️</button>
+    </div>
+  </div>
+</div>
+
+<a class="back-lobby show" href="index.html">🏠 回到派對現場</a>
+<a class="turn-nav show" id="turnLeft"  href="quiz.html"><span class="tn-arrow">←</span><span class="tn-label">左轉 💗小測驗</span></a>
+<a class="turn-nav show" id="turnRight" href="cake.html"><span class="tn-arrow">→</span><span class="tn-label">🎂蛋糕櫃 右轉</span></a>
+
+<!-- 壽星信箱 -->
+<button class="owner-fab" id="ownerFab">📬 我的信箱 (<span id="ownerCount">0</span>)</button>
+<div class="letter-modal" id="inboxModal">
+  <div class="letter-card inbox-card">
+    <button class="letter-close" id="inboxClose">✕</button>
+    <h3>📬 Momo 的信箱</h3>
+    <div class="ltip">朋友寄給你的悄悄話都在這裡</div>
+    <div class="inbox-list" id="inboxList"></div>
+  </div>
+</div>
+
+<div class="floating">
+  <div class="theme-pop" id="themePop">
+    <div class="theme-dot t-lavender" data-theme="lavender" title="薰衣草紫"></div>
+    <div class="theme-dot t-sakura"   data-theme="sakura"   title="櫻花粉"></div>
+    <div class="theme-dot t-sky"      data-theme="sky"      title="晴空藍"></div>
+    <div class="theme-dot t-butter"   data-theme="butter"   title="奶油黃"></div>
+  </div>
+  <button class="fab" id="themeFab" title="換主題色">🎨</button>
+  <button class="fab" id="bgmFab"   title="生日歌 BGM">🔇</button>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/wall.js"></script>
+</body>
+</html>

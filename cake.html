@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 蛋糕櫃｜2026 Momo's Day</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Long+Cang&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/cake.css">
+</head>
+<body data-theme="lavender">
+
+<div class="bg-decor"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="fx"></canvas>
+
+<!-- 場景滿版背景照 -->
+<div class="scene-bg" data-bg="cake"></div>
+
+<!-- 右上小頭像 -->
+<div class="me-mini" id="meMini"><span class="ic">🎀</span><span class="nm">朋友</span></div>
+
+<section class="panel page-fade" data-panel="cake">
+  <div class="scene-hero">
+    <div class="sh-title">🎂 Mo's Cake</div>
+    <div class="sh-sub">歡迎光臨甜點櫃・挑一塊蛋糕幫 Momo 慶生</div>
+    <div class="scroll-cue"><span>向下探索</span><span class="arrow">↓</span></div>
+  </div>
+
+  <div class="scene-body">
+    <div class="grid2">
+      <!-- 蛋糕台 -->
+      <div class="cardbox">
+        <div class="section-title"><span class="em">🎂</span> 蛋糕櫃 <small>選一個 → 點火苗吹蠟燭許願</small></div>
+        <div class="cake-stage">
+          <div class="cake-plate">
+            <div class="flame" id="flame" title="點我吹熄、許願"></div>
+            <div class="candle"></div>
+            <div class="slice" id="slicePhoto"><span class="slice-ph">🍰</span></div>
+            <div class="plate-base"></div>
+          </div>
+          <div class="cake-name" id="cakeName">香草千層蛋糕</div>
+          <div class="wish-line" id="wishLine"></div>
+          <div class="cake-picker" id="cakePicker"></div>
+        </div>
+      </div>
+
+      <!-- 慶賀特效 + 愛心集氣 -->
+      <div class="cardbox">
+        <div class="section-title"><span class="em">🎉</span> 一起慶賀 <small>放煙火、按愛心集氣</small></div>
+        <div class="celebrate-row">
+          <button class="cel-btn" data-fx="fireworks">🎆 煙火</button>
+          <button class="cel-btn" data-fx="confetti">🎊 彩帶</button>
+          <button class="cel-btn" data-fx="firecracker">🧨 鞭炮</button>
+          <button class="cel-btn" data-fx="gold">✨ 金箔</button>
+        </div>
+        <div class="heart-bucket" style="margin-top:22px">
+          <div class="heart-meter" id="heartMeter" title="點我集氣">
+            <svg viewBox="0 0 200 180" width="150" height="135" aria-hidden="true">
+              <defs>
+                <clipPath id="heartClip">
+                  <path d="M100 165 C 35 120 20 75 45 50 C 62 33 88 38 100 58 C 112 38 138 33 155 50 C 180 75 165 120 100 165 Z"/>
+                </clipPath>
+              </defs>
+              <path class="heart-track"   d="M100 165 C 35 120 20 75 45 50 C 62 33 88 38 100 58 C 112 38 138 33 155 50 C 180 75 165 120 100 165 Z"/>
+              <g clip-path="url(#heartClip)">
+                <rect id="heartFill" class="heart-fill" x="0" y="154" width="200" height="180"/>
+              </g>
+              <path class="heart-outline" d="M100 165 C 35 120 20 75 45 50 C 62 33 88 38 100 58 C 112 38 138 33 155 50 C 180 75 165 120 100 165 Z"/>
+            </svg>
+            <div class="heart-num"><span id="heartCount">0</span></div>
+          </div>
+          <div class="heart-hint">點愛心幫 Momo 集氣 💜</div>
+        </div>
+      </div>
+    </div>
+    <footer>made with ♡ for Momo・#2026 Momo's Day</footer>
+  </div>
+</section>
+
+<!-- 回大廳 / 左右轉 -->
+<a class="back-lobby show" href="index.html">🏠 回到派對現場</a>
+<a class="turn-nav show" id="turnLeft"  href="wall.html"><span class="tn-arrow">←</span><span class="tn-label">左轉 💌祝福牆</span></a>
+<a class="turn-nav show" id="turnRight" href="exhibition.html"><span class="tn-arrow">→</span><span class="tn-label">📸展覽區 右轉</span></a>
+
+<!-- 壽星信箱（網址加 #momo 才出現） -->
+<button class="owner-fab" id="ownerFab">📬 我的信箱 (<span id="ownerCount">0</span>)</button>
+<div class="letter-modal" id="inboxModal">
+  <div class="letter-card inbox-card">
+    <button class="letter-close" id="inboxClose">✕</button>
+    <h3>📬 Momo 的信箱</h3>
+    <div class="ltip">朋友寄給你的悄悄話都在這裡</div>
+    <div class="inbox-list" id="inboxList"></div>
+  </div>
+</div>
+
+<!-- 浮動控制 -->
+<div class="floating">
+  <div class="theme-pop" id="themePop">
+    <div class="theme-dot t-lavender" data-theme="lavender" title="薰衣草紫"></div>
+    <div class="theme-dot t-sakura"   data-theme="sakura"   title="櫻花粉"></div>
+    <div class="theme-dot t-sky"      data-theme="sky"      title="晴空藍"></div>
+    <div class="theme-dot t-butter"   data-theme="butter"   title="奶油黃"></div>
+  </div>
+  <button class="fab" id="themeFab" title="換主題色">🎨</button>
+  <button class="fab" id="bgmFab"   title="生日歌 BGM">🔇</button>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/cake.js"></script>
+</body>
+</html>

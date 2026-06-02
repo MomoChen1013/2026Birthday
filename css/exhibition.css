@@ -1,0 +1,18 @@
+/* ============================================================
+   展覽區 — 拍立得頁面背景
+============================================================ */
+.scene-bg[data-bg="gallery"]{background-image:url('../images/scene-gallery.jpg');background-position:center;}
+
+/* ============================================================
+   拍立得照片牆
+============================================================ */
+.polaroid-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:24px;}
+.polaroid{background:#fff;padding:12px 12px 0;border-radius:6px;box-shadow:0 12px 26px var(--shadow);transition:transform .3s;}
+.polaroid:hover{transform:scale(1.04) rotate(0)!important;z-index:3;}
+.polaroid .ph{aspect-ratio:1;border-radius:3px;background:linear-gradient(135deg,var(--primary-soft),var(--bg-blob2));
+  display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(91,74,110,.4);overflow:hidden;}
+.polaroid .ph img{width:100%;height:100%;object-fit:cover;}
+.polaroid .cap{font-family:var(--font-hand);font-size:22px;text-align:center;padding:10px 4px 14px;color:var(--ink);}
+.polaroid:nth-child(3n){transform:rotate(-2deg);}
+.polaroid:nth-child(3n+1){transform:rotate(1.5deg);}
+.polaroid:nth-child(3n+2){transform:rotate(-1deg);}
