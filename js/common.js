@@ -38,6 +38,7 @@ const DataStore = {
   _letters:   LS.get('letters', []),
   _hearts:    LS.get('hearts', 0),
   _collected: LS.get('collected', []),
+  _cakes:     LS.get('cakes', []),
 
   addWish(w){ this._wishes.push(w);   LS.set('wishes', this._wishes); },
   getWishes(){ return this._wishes; },
@@ -51,6 +52,10 @@ const DataStore = {
 
   addCollected(c){ this._collected.push(c); LS.set('collected', this._collected); },
   getCollected(){ return this._collected; },
+
+  /* 蛋糕慶祝儀式收集桶 */
+  addCake(c){ this._cakes.push(c); LS.set('cakes', this._cakes); },
+  getCakes(){ return this._cakes; },
 };
 
 /* ============================================================
