@@ -21,28 +21,61 @@
 
 <div class="me-mini" id="meMini"><span class="ic">🎀</span><span class="nm">朋友</span></div>
 
+<!-- 頂部全頁進度條 -->
+<div class="tl-topbar" id="tlTopbar"></div>
+
 <section class="panel page-fade" data-panel="exhibition">
+
+  <!-- 入口封面 -->
   <div class="scene-hero">
     <div class="sh-title">📸 Mo's Gallery</div>
-    <div class="sh-sub">走進 Momo 的回憶展區・拍立得照片牆</div>
-    <div class="scroll-cue"><span>向下探索</span><span class="arrow">↓</span></div>
+    <div class="sh-sub">沿著時間線往前走・這些年的 Momo</div>
+    <div class="scroll-cue"><span>向下滾動・走過時光</span><span class="arrow">↓</span></div>
   </div>
 
-  <div class="scene-body">
-    <div class="cardbox">
-      <div class="polaroid-wall" id="polaroidWall"></div>
-      <p style="text-align:center;color:var(--ink-soft);font-size:13px;margin-top:18px">
-        ☁️ 照片之後由 Momo 上傳・在 <code>js/exhibition.js</code> 的 <code>PHOTOS</code> 陣列填入圖片網址即可
-      </p>
+  <!-- 橫向時間軸 -->
+  <section class="tl-sec" id="tlSec">
+    <div class="tl-pin">
+      <div class="tl-year-back" id="tlYearBack">2021</div>
+      <div class="tl-head">
+        <div class="tl-eyebrow">Scroll to travel</div>
+        <h2>Momo's Timeline ♡</h2>
+      </div>
+
+      <div class="tl-track" id="tlTrack">
+        <div class="tl-rail"></div>
+        <!-- 節點由 js/exhibition.js 動態建立 -->
+      </div>
+
+      <div class="tl-hint">滑鼠拖曳・鍵盤 ← → ・點照片放大</div>
+      <div class="tl-progress" id="tlDots"></div>
     </div>
+  </section>
+
+  <!-- 後續區塊 -->
+  <div class="scene-body">
+    <p style="text-align:center;color:var(--ink-soft);font-size:13px;margin-top:18px;">
+      ☁️ 在 <code>js/exhibition.js</code> 的 <code>PHOTOS</code> 陣列填入年月、圖片網址、說明
+    </p>
     <footer>made with ♡ for Momo・#2026 Momo's Day</footer>
   </div>
 </section>
 
+<!-- lightbox -->
+<div class="lb" id="lb">
+  <div class="lb-card">
+    <button class="lb-close" id="lbClose">✕</button>
+    <div class="ph" id="lbPh">📷</div>
+    <div class="lb-body">
+      <div class="lb-date" id="lbDate">2024.03</div>
+      <div class="t" id="lbT">標題</div>
+    </div>
+  </div>
+</div>
+
 <a class="back-lobby show" href="index.html">回到大廳</a>
 <a class="turn-nav show" id="turnLeft"  href="cake.html"><span class="tn-arrow">←</span><span class="tn-label">🎂蛋糕櫃</span></a>
 <a class="turn-nav show" id="turnRight" href="draw.html"><span class="tn-arrow">→</span><span class="tn-label">🃏抽小卡</span></a>
-
 
 <div class="floating">
   <div class="theme-pop" id="themePop">
