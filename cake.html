@@ -45,7 +45,7 @@
 <section class="panel page-fade" data-panel="cake">
   <div class="scene-hero">
     <div class="sh-title">🎂 Mo's Cake</div>
-    <div class="sh-sub">挑一塊蛋糕・吹熄蠟燭・收進桶子，幫 Momo 慶生</div>
+    <div class="sh-sub">挑一塊蛋糕・吹熄蠟燭後，幫 Momo 慶生</div>
     <div class="scroll-cue"><span>向下開始</span><span class="arrow">↓</span></div>
   </div>
 
@@ -66,14 +66,6 @@
 
     <!-- ===== 下方：慶祝儀式舞台 ===== -->
     <div class="cardbox ritual-card">
-      <!-- 進度點 -->
-      <div class="step-dots">
-        <div class="step-dot" data-i="1">1<span class="d-lb">選蛋糕</span></div>
-        <div class="step-dot" data-i="2">2<span class="d-lb">吹蠟燭</span></div>
-        <div class="step-dot" data-i="3">3<span class="d-lb">煙火</span></div>
-        <div class="step-dot" data-i="4">4<span class="d-lb">收進桶</span></div>
-      </div>
-
       <!-- 蛋糕台（pick → drop 共用） -->
       <div class="ritual-plate" id="ritualPlate" hidden>
         <div class="cake-plate cake-plate-static">
@@ -129,19 +121,9 @@
 
 <!-- 回大廳 / 左右轉 -->
 <a class="back-lobby show" href="index.html">🏠 回到派對現場</a>
-<a class="turn-nav show" id="turnLeft"  href="wall.html"><span class="tn-arrow">←</span><span class="tn-label">左轉 💌祝福牆</span></a>
-<a class="turn-nav show" id="turnRight" href="exhibition.html"><span class="tn-arrow">→</span><span class="tn-label">📸展覽區 右轉</span></a>
+<a class="turn-nav show" id="turnLeft"  href="wall.html"><span class="tn-arrow">←</span><span class="tn-label">💌祝福牆</span></a>
+<a class="turn-nav show" id="turnRight" href="exhibition.html"><span class="tn-arrow">→</span><span class="tn-label">📸展覽區</span></a>
 
-<!-- 壽星信箱（網址加 #momo 才出現） -->
-<button class="owner-fab" id="ownerFab">📬 我的信箱 (<span id="ownerCount">0</span>)</button>
-<div class="letter-modal" id="inboxModal">
-  <div class="letter-card inbox-card">
-    <button class="letter-close" id="inboxClose">✕</button>
-    <h3>📬 Momo 的信箱</h3>
-    <div class="ltip">朋友寄給你的悄悄話都在這裡</div>
-    <div class="inbox-list" id="inboxList"></div>
-  </div>
-</div>
 
 <!-- 浮動控制 -->
 <div class="floating">
