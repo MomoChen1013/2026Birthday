@@ -55,11 +55,11 @@ function openCurtain(){
 document.getElementById('enterBtn').addEventListener('click', ()=>{
   const n = nameInput.value.trim();
   if(!n){ nameInput.focus(); shake(); return; }
-  saveUser({ name:n, icon:currentIcon });
+  try { saveUser({ name:n, icon:currentIcon }); } catch(e){ console.warn('saveUser failed', e); }
   syncBadge();
-  startBGM();                                  // 必須在使用者點擊後啟動
-  gate.style.display='none';
-  runCountdown();
+  gate.style.display='none';                   // 先把入口畫面收掉
+  runCountdown();                              // 馬上開始倒數
+  try { startBGM(); } catch(e){ console.warn('BGM 啟動失敗', e); }  // 音樂掛掉也不影響流程
 });
 
 /* 若已經登入過，直接跳過 gate */
