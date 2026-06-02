@@ -140,6 +140,7 @@ async function autoDrop(){
     icon:  me_user.icon,
     cake:  chosen.name,
     emoji: chosen.emoji,
+    img:   chosen.img || '',
     time:  Date.now(),
   };
   await saveCakeOffering(payload);
@@ -168,8 +169,12 @@ function flyToBucket(){
     const t = target.getBoundingClientRect();
 
     const fly = document.createElement('div');
-    fly.className   = 'fly-cake';
-    fly.textContent = chosen.emoji;
+    fly.className = 'fly-cake';
+    if(chosen.img){
+      fly.innerHTML = `<img src="${chosen.img}" alt="" draggable="false">`;
+    } else {
+      fly.textContent = chosen.emoji;
+    }
     fly.style.left  = (s.left + s.width/2 - 30) + 'px';
     fly.style.top   = (s.top  + s.height/2 - 30) + 'px';
     document.body.appendChild(fly);
@@ -263,8 +268,12 @@ function addCakeBody(payload){
   World.add(engine.world, body);
 
   const el = document.createElement('div');
-  el.className   = 'bk-item';
-  el.textContent = payload.emoji || '🍰';
+  el.className = 'bk-item';
+  if(payload.img){
+    el.innerHTML = `<img src="${payload.img}" alt="" draggable="false">`;
+  } else {
+    el.textContent = payload.emoji || '🍰';
+  }
   el.style.transform = `translate(${x - RADIUS}px, ${y - RADIUS}px)`;
   bucketEl.appendChild(el);
 

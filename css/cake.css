@@ -54,10 +54,13 @@
 /* 物理桶子裡的蛋糕（DOM 位置由 Matter.js 更新） */
 .bk-item{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;font-size:30px;line-height:1;
+  overflow:hidden;
   background:linear-gradient(135deg,#ffffff,var(--primary-soft));
   border:2px solid #fff;box-shadow:0 4px 10px var(--shadow);
   cursor:pointer;user-select:none;will-change:transform;
   animation:bkPop .35s cubic-bezier(.18,1.4,.4,1);}
+.bk-item img{width:100%;height:100%;object-fit:cover;border-radius:50%;
+  display:block;pointer-events:none;-webkit-user-drag:none;}
 .bk-item:hover{filter:brightness(1.05);}
 @keyframes bkPop{from{transform:scale(.5);opacity:0}to{opacity:1}}
 
@@ -105,5 +108,8 @@
 
 /* 飛進桶子的蛋糕 */
 .fly-cake{position:fixed;z-index:850;font-size:60px;line-height:1;pointer-events:none;
+  width:60px;height:60px;display:flex;align-items:center;justify-content:center;
   transition:transform .85s cubic-bezier(.5,.2,.3,1), opacity .8s ease;
   filter:drop-shadow(0 8px 14px var(--shadow));will-change:transform;}
+.fly-cake img{width:100%;height:100%;object-fit:cover;border-radius:50%;
+  border:2px solid #fff;display:block;}
