@@ -23,7 +23,7 @@
   <div class="gate-card">
     <div class="ribbon">✦ WELCOME TO ✦</div>
     <h1>Momo's Day</h1>
-    <div class="sub">在進場前，先讓我認識你～</div>
+    <div class="sub">在進場前，先報上名來～</div>
     <div class="icon-pick" id="iconPick">🎀</div>
     <div class="icon-hint">這是你的專屬 icon・<b id="rerollIcon">換一個</b></div>
     <div class="field"><input id="nameInput" type="text" maxlength="12" placeholder="輸入你的名字"></div>
@@ -56,19 +56,19 @@
           <!-- 🎂 左轉 → 蛋糕櫃 -->
           <a class="hot" href="cake.html" style="left:3%;top:46%;width:32%;height:26%;border-radius:14px;">
             <span class="ring"></span><span class="beacon"></span>
-            <span class="pin"><span class="chip">🎂 蛋糕櫃</span><span class="dir">← 左轉</span></span>
+            <span class="pin"><span class="chip">🎂 蛋糕櫃</span><span class="dir">←</span></span>
           </a>
 
           <!-- 📸 直走 → 展覽區 -->
           <a class="hot" href="exhibition.html" style="left:34%;top:26%;width:32%;height:30%;border-radius:50% 50% 8px 8px;">
             <span class="ring"></span><span class="beacon"></span>
-            <span class="pin"><span class="chip">📸 展覽區</span><span class="dir">↑ 直走</span></span>
+            <span class="pin"><span class="chip">📸 展覽區</span><span class="dir">↑</span></span>
           </a>
 
           <!-- 💌 右轉 → 祝福牆 -->
           <a class="hot" href="wall.html" style="left:64%;top:44%;width:33%;height:26%;border-radius:14px;">
             <span class="ring"></span><span class="beacon"></span>
-            <span class="pin"><span class="chip">💌 祝福牆</span><span class="dir">右轉 →</span></span>
+            <span class="pin"><span class="chip">💌 祝福牆</span><span class="dir">→</span></span>
           </a>
         </div>
 
@@ -80,26 +80,12 @@
           </div>
           <h1>Happy Birthday Momo!</h1>
           <div class="cn">🎉 點場景出發，一起幫壽星慶生 🎉</div>
-          <div class="user-badge">
-            <span class="ic" id="badgeIcon">🎀</span>
-            <span><span class="nm" id="badgeName">朋友</span><br><small>已抵達派對現場</small></span>
-          </div>
         </div>
       </div>
     </div>
   </section>
 </div>
 
-<!-- 壽星專屬：信箱按鈕（網址加 #momo 才出現） -->
-<button class="owner-fab" id="ownerFab">📬 我的信箱 (<span id="ownerCount">0</span>)</button>
-<div class="letter-modal" id="inboxModal">
-  <div class="letter-card inbox-card">
-    <button class="letter-close" id="inboxClose">✕</button>
-    <h3>📬 Momo 的信箱</h3>
-    <div class="ltip">朋友寄給你的悄悄話都在這裡</div>
-    <div class="inbox-list" id="inboxList"></div>
-  </div>
-</div>
 
 <!-- 浮動控制：主題 + BGM -->
 <div class="floating">
