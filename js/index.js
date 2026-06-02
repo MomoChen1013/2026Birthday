@@ -14,8 +14,8 @@ const gate     = document.getElementById('gate');
 let currentIcon = ICONS[Math.floor(Math.random()*ICONS.length)];
 
 function syncBadge(){
-  badgeName.textContent = me_user.name;
-  badgeIcon.textContent = me_user.icon;
+  if(badgeName) badgeName.textContent = me_user.name;
+  if(badgeIcon) badgeIcon.textContent = me_user.icon;
 }
 function rollIcon(){
   currentIcon = ICONS[Math.floor(Math.random()*ICONS.length)];
