@@ -1,7 +1,7 @@
 /* ============================================================
-   展覽區 — 抽卡頁面背景（與展覽區共用同一張）
+   抽小卡 — 場景背景（粉色茶几・專屬抽卡 + 測驗用）
 ============================================================ */
-.scene-bg[data-bg="gallery"]{background-image:url('../images/scene-gallery.jpg');background-position:center;}
+.scene-bg[data-bg="gallery"]{background-image:url('../images/scene-cards.jpg');background-position:center;}
 
 /* ============================================================
    抽卡（全息收藏卡質感）

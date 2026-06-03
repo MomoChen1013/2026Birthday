@@ -1,7 +1,7 @@
 /* ============================================================
-   展覽區 — 小測驗頁面背景（與展覽區共用同一張）
+   小測驗 — 場景背景（粉色茶几・與抽小卡共用）
 ============================================================ */
-.scene-bg[data-bg="gallery"]{background-image:url('../images/scene-gallery.jpg');background-position:center;}
+.scene-bg[data-bg="gallery"]{background-image:url('../images/scene-cards.jpg');background-position:center;}
 
 /* ============================================================
    小測驗
