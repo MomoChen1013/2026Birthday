@@ -1,7 +1,7 @@
 /* ============================================================
    祝福牆頁面 — 場景背景
 ============================================================ */
-.scene-bg[data-bg="wishes"]{background-image:url('../images/scene-wishes.jpg');background-position:72% center;}
+.scene-bg[data-bg="wishes"]{background-image:url('../images/scene-wishes.jpg');background-position:center;}
 
 /* ============================================================
    簽到祝福留言牆
