@@ -126,9 +126,20 @@ function appendMini(pick){
   coll.appendChild(mc);
 }
 
-/* 還原歷史收藏（localStorage） */
-DataStore.getCollected().forEach(appendMini);
-collCount.textContent = DataStore.getCollected().length;
+/* 還原歷史收藏（Firestore；增量渲染以免重複） */
+const collectedRendered = new Set();
+function renderCollection(){
+  const all = DataStore.getCollected();
+  collCount.textContent = all.length;
+  all.forEach(c => {
+    const key = c.id || (c.name + '|' + c.time);
+    if(collectedRendered.has(key)) return;
+    collectedRendered.add(key);
+    appendMini(c);
+  });
+}
+document.addEventListener('data:collected', renderCollection);
+renderCollection();
 
 /* ===== 抽卡 ===== */
 document.getElementById('drawBtn').addEventListener('click', ()=>{
@@ -164,8 +175,7 @@ document.getElementById('drawBtn').addEventListener('click', ()=>{
     confettiRain();
 
     DataStore.addCollected(pick);
-    appendMini(pick);
-    collCount.textContent = DataStore.getCollected().length;
+    /* mini-card 與計數會由 'data:collected' 事件自動更新 */
     drawing = false;
   }, 300);
 });

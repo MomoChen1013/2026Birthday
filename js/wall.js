@@ -17,14 +17,13 @@ function renderWishes(){
 document.getElementById('postWish').addEventListener('click',()=>{
   const t=document.getElementById('wishText').value.trim();
   if(!t) return;
-  DataStore.addWish({name:me_user.name, icon:me_user.icon, text:t, time:Date.now()});
+  DataStore.addWish({name:me_user.name, icon:me_user.icon, text:t});
   document.getElementById('wishText').value='';
-  renderWishes(); confettiRain();
+  confettiRain();
+  /* 不需手動 renderWishes，onSnapshot 會推 'data:wishes' 回來自動重畫 */
 });
-/* 第一次造訪時放一張示範祝福（之後接 Firebase 可移除） */
-if(!DataStore.getWishes().length){
-  DataStore.addWish({name:'小編', icon:'🐰', text:'Momo 生日快樂！這一年也要繼續發光發熱 ✨', time:Date.now()});
-}
+
+document.addEventListener('data:wishes', renderWishes);
 renderWishes();
 
 /* ---------- 信箱 ---------- */
@@ -41,13 +40,15 @@ function closeLetter(){ letterModal.classList.remove('open'); }
 function submitLetter(){
   const t=letterText.value.trim();
   if(!t){ letterText.focus(); return; }
-  DataStore.addLetter({name:me_user.name, icon:me_user.icon, text:t, time:Date.now()});
-  renderLetterCount();
+  DataStore.addLetter({name:me_user.name, icon:me_user.icon, text:t});
   letterText.value='';
   closeLetter();
   spawnFloat('💌', innerWidth/2, innerHeight*0.7);
   confettiRain();
+  /* renderLetterCount 會由 'data:letters' 事件觸發 */
 }
+
+document.addEventListener('data:letters', renderLetterCount);
 
 document.getElementById('mailbox').addEventListener('click', openLetter);
 document.getElementById('writeLetter').addEventListener('click', openLetter);
