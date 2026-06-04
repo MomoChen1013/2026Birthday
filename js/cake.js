@@ -26,25 +26,10 @@ let step   = 'idle';
 const STEP_INDEX = { idle:0, pick:1, blow:2, party:3, drop:4, done:5 };
 
 /* ============================================================
-   Firebase / localStorage 共通存讀介面
+   蛋糕存讀：透過 DataStore（Firestore）
 ============================================================ */
 async function saveCakeOffering(payload){
-  if(window.fsDb){
-    try{
-      await window.fsDb.collection('cakes').add(payload);
-      return;
-    }catch(e){ console.warn('Firebase 寫入失敗，改存 localStorage', e); }
-  }
-  DataStore.addCake(payload);
-}
-async function loadCakeOfferings(){
-  if(window.fsDb){
-    try{
-      const snap = await window.fsDb.collection('cakes').orderBy('time').get();
-      return snap.docs.map(d => d.data());
-    }catch(e){ console.warn('Firebase 讀取失敗，改讀 localStorage', e); }
-  }
-  return DataStore.getCakes();
+  await DataStore.addCake(payload);
 }
 
 /* ============================================================
@@ -144,7 +129,7 @@ async function autoDrop(){
     time:  Date.now(),
   };
   await saveCakeOffering(payload);
-  appendCake(payload);
+  /* 不直接 appendCake，等 'data:cakes' 事件由 DataStore 推回，避免雙倍渲染 */
 
   document.getElementById('senderName').textContent = me_user.name;
   document.getElementById('senderCake').textContent = chosen.name;
@@ -300,23 +285,33 @@ function updateCount(n){
   bucketEl.classList.toggle('has-items', n > 0);
 }
 
-/* 第一次載入：把已存的蛋糕一個一個丟進去 */
-async function initBucket(){
-  const items = await loadCakeOfferings();
-  updateCount(items.length);
-  if(!items.length) return;
+/* ============================================================
+   訂閱 Firestore：onSnapshot 推回 'data:cakes'，這邊增量渲染
+============================================================ */
+const renderedIds = new Set();
+let firstRender = true;
 
-  // 只渲染最近 MAX_BODIES 個
-  const visible = items.slice(-MAX_BODIES);
-  visible.forEach((p, i)=>{
-    setTimeout(()=> addCakeBody(p), i * 80);
+function renderCakes(){
+  const items = DataStore.getCakes();
+  updateCount(items.length);
+
+  // 首次：把已存在的最後 MAX_BODIES 顆一次填入
+  if(firstRender){
+    firstRender = false;
+    const visible = items.slice(-MAX_BODIES);
+    visible.forEach((p, i)=>{
+      if(p.id) renderedIds.add(p.id);
+      setTimeout(()=> addCakeBody(p), i * 80);
+    });
+    return;
+  }
+
+  // 後續：只渲染還沒看過的（新進的、或別人剛送的）
+  items.forEach(p=>{
+    if(!p.id || renderedIds.has(p.id)) return;
+    renderedIds.add(p.id);
+    addCakeBody(p);
   });
 }
 
-/* 慶祝儀式送出新蛋糕時呼叫 */
-function appendCake(payload){
-  updateCount(totalCakes + 1);
-  addCakeBody(payload);
-}
-
-initBucket();
+document.addEventListener('data:cakes', renderCakes);

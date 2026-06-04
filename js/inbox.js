@@ -60,6 +60,11 @@ if(sessionStorage.getItem(SESSION_KEY) === '1'){
   setTimeout(()=>pwInput.focus(), 100);
 }
 
+/* 解鎖狀態下，遠端有新信進來自動重畫 */
+document.addEventListener('data:letters', ()=>{
+  if(sessionStorage.getItem(SESSION_KEY) === '1') renderInbox();
+});
+
 /* ---------- 信箱渲染 ---------- */
 function timeStr(ts){
   const d = new Date(ts);

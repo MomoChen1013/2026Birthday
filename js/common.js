@@ -30,38 +30,92 @@ const LS = {
 };
 
 /* ============================================================
-   資料層（DataStore）— 之後接 Firebase 時，只要把每個方法
-   內部換成 Firestore 呼叫即可，其他程式碼不用動。
+   資料層（DataStore）— Firestore 版
+   ・寫入 → 走 Firestore（非同步）
+   ・讀取 → 同步取本地快取，由 onSnapshot 即時推回
+   ・資料變動時 dispatch 'data:<key>'，畫面可監聽重渲染
 ============================================================ */
 const DataStore = {
-  _wishes:    LS.get('wishes', []),
-  _letters:   LS.get('letters', []),
-  _hearts:    LS.get('hearts', 0),
-  _collected: LS.get('collected', []),
-  _cakes:     LS.get('cakes', []),
-  _compat:    LS.get('compat', []),
+  _wishes:[], _letters:[], _hearts:0, _collected:[], _cakes:[], _compat:[],
+  _subscribed:false,
 
-  addWish(w){ this._wishes.push(w);   LS.set('wishes', this._wishes); },
-  getWishes(){ return this._wishes; },
+  init(){
+    if(!window.fb){ console.warn('[DataStore] window.fb 還沒就緒'); return; }
+    const { auth, onAuthStateChanged } = window.fb;
+    onAuthStateChanged(auth, user => {
+      if(!user || this._subscribed) return;
+      this._subscribed = true;
+      this._subscribe();
+    });
+  },
 
-  addLetter(l){ this._letters.push(l); LS.set('letters', this._letters); },
+  _subscribe(){
+    const { db, collection, onSnapshot, query, orderBy, doc } = window.fb;
+    const sub = (name, key) => {
+      const q = query(collection(db, name), orderBy('time', 'asc'));
+      onSnapshot(q, snap => {
+        this['_'+key] = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        document.dispatchEvent(new CustomEvent('data:'+key));
+      }, err => console.warn('[DataStore] onSnapshot', name, err));
+    };
+    sub('wishes',    'wishes');
+    sub('letters',   'letters');
+    sub('collected', 'collected');
+    sub('cakes',     'cakes');
+    sub('compat',    'compat');
+
+    /* 愛心是單一計數器，存在 meta/hearts */
+    onSnapshot(doc(db, 'meta', 'hearts'), snap => {
+      this._hearts = (snap.data()?.count) || 0;
+      document.dispatchEvent(new CustomEvent('data:hearts'));
+    }, err => console.warn('[DataStore] onSnapshot hearts', err));
+  },
+
+  /* ===== 寫入（async；可不 await） ===== */
+  async addWish(w){
+    const { db, collection, addDoc } = window.fb;
+    return addDoc(collection(db, 'wishes'), { ...w, time: w.time || Date.now() });
+  },
+  async addLetter(l){
+    const { db, collection, addDoc } = window.fb;
+    return addDoc(collection(db, 'letters'), { ...l, time: l.time || Date.now() });
+  },
+  async addCollected(c){
+    const { db, collection, addDoc } = window.fb;
+    return addDoc(collection(db, 'collected'), { ...c, time: Date.now() });
+  },
+  async addCake(c){
+    const { db, collection, addDoc } = window.fb;
+    return addDoc(collection(db, 'cakes'), { ...c, time: c.time || Date.now() });
+  },
+  async addCompat(answers){
+    const { db, collection, addDoc } = window.fb;
+    return addDoc(collection(db, 'compat'), { answers, time: Date.now() });
+  },
+  async addHeart(){
+    const { db, doc, runTransaction } = window.fb;
+    const ref = doc(db, 'meta', 'hearts');
+    await runTransaction(db, async tx => {
+      const cur = (await tx.get(ref)).data()?.count || 0;
+      tx.set(ref, { count: cur + 1 });
+    });
+    return this._hearts + 1;
+  },
+
+  /* ===== 讀取（同步回本地快取） ===== */
+  getWishes()     { return this._wishes; },
+  getLetters()    { return this._letters; },
   getLetterCount(){ return this._letters.length; },
-  getLetters(){ return this._letters; },
-
-  addHeart(){ this._hearts++;          LS.set('hearts', this._hearts); return this._hearts; },
-  getHearts(){ return this._hearts; },
-
-  addCollected(c){ this._collected.push(c); LS.set('collected', this._collected); },
-  getCollected(){ return this._collected; },
-
-  /* 蛋糕慶祝儀式收集桶 */
-  addCake(c){ this._cakes.push(c); LS.set('cakes', this._cakes); },
-  getCakes(){ return this._cakes; },
-
-  /* 與 Momo 的契合度：每筆是 [a, b, c, d, e]（題號 → 選項 index） */
-  addCompat(answers){ this._compat.push(answers); LS.set('compat', this._compat); },
-  getCompat(){ return this._compat; },
+  getHearts()     { return this._hearts; },
+  getCollected()  { return this._collected; },
+  getCakes()      { return this._cakes; },
+  /* compat 早期是「直接陣列」，現在統一包成 {answers:[...]}，取出時還原 */
+  getCompat()     { return this._compat.map(c => c.answers || c); },
 };
+
+/* 等 firebase-init.js 載入完成才啟動 */
+if(window.fb) DataStore.init();
+else window.addEventListener('fb:ready', () => DataStore.init());
 
 /* ============================================================
    使用者（名字 + 隨機 icon）
