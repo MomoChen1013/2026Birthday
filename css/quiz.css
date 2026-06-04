@@ -48,3 +48,95 @@
 .q-result .big{font-family:var(--font-display);font-size:54px;font-weight:700;color:var(--primary-deep);}
 .q-result .msg{font-size:17px;margin:8px 0 18px;font-weight:700;}
 .q-result .btn{margin:0 auto;}
+
+/* ============================================================
+   與 Momo 的契合度
+============================================================ */
+.compat-section-title{margin-top:34px;}
+.compat-card{padding:24px;max-width:580px;margin:0 auto;}
+.compat-intro{text-align:center;color:var(--ink);font-size:14px;margin-bottom:22px;line-height:1.7;}
+.compat-intro small{color:var(--ink-soft);font-size:12px;}
+
+/* 問題 */
+.compat-q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);}
+.compat-q:last-of-type{border-bottom:none;padding-bottom:0;}
+.compat-q-title{font-family:var(--font-display);font-weight:700;font-size:17px;
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--ink);}
+.compat-q-title .em{font-size:22px;}
+.compat-q-text{color:var(--ink-soft);font-size:13.5px;margin-bottom:12px;line-height:1.6;}
+
+.compat-opts{display:flex;flex-direction:column;gap:8px;}
+.compat-opt{padding:12px 14px;border-radius:12px;border:2px solid var(--line);
+  background:#fff;cursor:pointer;font-size:14px;color:var(--ink);
+  transition:.2s;text-align:left;display:flex;gap:10px;align-items:flex-start;
+  font-family:var(--font-body);width:100%;line-height:1.6;}
+.compat-opt:hover{border-color:var(--primary);background:var(--primary-soft);}
+.compat-opt.sel{border-color:var(--primary-deep);background:var(--primary-soft);font-weight:600;
+  box-shadow:0 4px 12px var(--shadow);}
+.compat-opt .ltr{font-family:var(--font-display);font-weight:700;color:var(--primary-deep);
+  min-width:18px;flex-shrink:0;}
+
+.compat-submit{display:block;margin:24px auto 0;max-width:240px;}
+.compat-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:0 6px 14px var(--shadow);}
+
+/* ---------- 結果 ---------- */
+.compat-result-head{text-align:center;margin-bottom:24px;padding-bottom:18px;
+  border-bottom:1px solid var(--line);}
+.compat-score{font-family:var(--font-display);font-size:54px;font-weight:700;
+  color:var(--primary-deep);line-height:1;}
+.compat-score small{font-size:24px;color:var(--ink-soft);font-weight:500;margin:0 4px;}
+.compat-score-hint{font-size:13px;color:var(--ink-soft);margin-top:6px;font-weight:600;}
+.compat-total-hint{font-size:12px;color:var(--ink-soft);margin-top:8px;}
+.compat-total-hint b{color:var(--primary-deep);font-family:var(--font-display);}
+
+.compat-chart-q{margin-bottom:24px;}
+.compat-chart-q:last-of-type{margin-bottom:6px;}
+.compat-chart-title{font-family:var(--font-display);font-weight:700;font-size:15px;
+  margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--ink);}
+.compat-chart-title .em{font-size:18px;}
+.compat-chart-q-text{color:var(--ink-soft);font-size:12px;margin-bottom:10px;line-height:1.5;}
+
+/* 長條圖 */
+.compat-bars{display:flex;flex-direction:column;gap:6px;}
+.compat-bar-row{display:grid;grid-template-columns:22px 1fr 36px;gap:8px;
+  align-items:center;font-size:13px;}
+.compat-bar-letter{font-family:var(--font-display);font-weight:700;color:var(--ink-soft);text-align:center;}
+.compat-bar-track{position:relative;height:30px;background:var(--bg2);
+  border-radius:8px;overflow:hidden;}
+.compat-bar-fill{position:absolute;top:0;left:0;bottom:0;
+  background:linear-gradient(90deg,var(--primary-soft),var(--primary));
+  border-radius:8px;transition:width .8s cubic-bezier(.2,.7,.3,1);}
+.compat-bar-count{font-family:var(--font-display);font-weight:700;color:var(--ink);
+  text-align:right;}
+
+/* 你選的 */
+.compat-bar-row.you .compat-bar-fill{
+  background:linear-gradient(90deg,#ffc4d6,#ff85a8);}
+.compat-bar-row.you .compat-bar-letter{color:#ff85a8;}
+
+/* Momo 選的 */
+.compat-bar-row.momo .compat-bar-fill{
+  background:linear-gradient(90deg,#fce38a,var(--gold));}
+.compat-bar-row.momo .compat-bar-letter{color:var(--gold-deep);}
+
+/* 你跟 Momo 一致 */
+.compat-bar-row.match .compat-bar-fill{
+  background:linear-gradient(90deg,#bbf0cd,#5cc98c);}
+.compat-bar-row.match .compat-bar-letter{color:#2e7d4a;}
+
+/* 浮在長條上的標籤（你 / Momo） */
+.compat-bar-badges{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  display:flex;gap:5px;pointer-events:none;}
+.compat-bar-badges .badge{font-family:var(--font-body);font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap;
+  box-shadow:0 2px 5px rgba(0,0,0,.15);}
+.compat-bar-badges .badge.you  {background:#ff85a8;}
+.compat-bar-badges .badge.momo {background:var(--gold-deep);}
+.compat-bar-badges .badge.match{background:#5cc98c;}
+
+/* 圖例與重來 */
+.compat-foot{font-size:12px;color:var(--ink-soft);text-align:center;margin:20px 0 14px;line-height:1.8;}
+.compat-foot .legend-you  {color:#ff85a8;font-weight:700;}
+.compat-foot .legend-momo {color:var(--gold-deep);font-weight:700;}
+.compat-foot .legend-match{color:#2e7d4a;font-weight:700;}
+.compat-reset{display:block;margin:0 auto;max-width:200px;}

@@ -39,6 +39,7 @@ const DataStore = {
   _hearts:    LS.get('hearts', 0),
   _collected: LS.get('collected', []),
   _cakes:     LS.get('cakes', []),
+  _compat:    LS.get('compat', []),
 
   addWish(w){ this._wishes.push(w);   LS.set('wishes', this._wishes); },
   getWishes(){ return this._wishes; },
@@ -56,6 +57,10 @@ const DataStore = {
   /* 蛋糕慶祝儀式收集桶 */
   addCake(c){ this._cakes.push(c); LS.set('cakes', this._cakes); },
   getCakes(){ return this._cakes; },
+
+  /* 與 Momo 的契合度：每筆是 [a, b, c, d, e]（題號 → 選項 index） */
+  addCompat(answers){ this._compat.push(answers); LS.set('compat', this._compat); },
+  getCompat(){ return this._compat; },
 };
 
 /* ============================================================
