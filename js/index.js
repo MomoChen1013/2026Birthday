@@ -51,6 +51,26 @@ function openCurtain(){
   },1700);
 }
 
+/* Google 登入：彈窗成功後自動填名字 + 進場 */
+const googleBtn = document.getElementById('googleBtn');
+googleBtn.addEventListener('click', async ()=>{
+  if(!window.fb || !window.fb.auth){
+    console.warn('Firebase 尚未就緒'); shake(); return;
+  }
+  googleBtn.disabled = true;
+  try{
+    const provider = new window.fb.GoogleAuthProvider();
+    const result   = await window.fb.signInWithPopup(window.fb.auth, provider);
+    const dn       = result.user?.displayName || '朋友';
+    nameInput.value = dn.slice(0, 12);   // input maxlength=12，超過裁掉
+    document.getElementById('enterBtn').click();
+  }catch(e){
+    console.warn('Google 登入失敗或取消：', e);
+    shake();
+    googleBtn.disabled = false;
+  }
+});
+
 /* 進場按鈕 */
 document.getElementById('enterBtn').addEventListener('click', ()=>{
   const n = nameInput.value.trim();
