@@ -87,11 +87,13 @@ const ITEMS = [
 /* 依編號排序 */
 ITEMS.sort((a,b)=> a.n - b.n);
 
-const track    = document.getElementById('tlTrack');
-const tlSec    = document.getElementById('tlSec');
-const yearBack = document.getElementById('tlYearBack');
-const topProg  = document.getElementById('tlTopbar');
-const dotsWrap = document.getElementById('tlDots');
+const track     = document.getElementById('tlTrack');
+const tlSec     = document.getElementById('tlSec');
+const yearBack  = document.getElementById('tlYearBack');
+const topProg   = document.getElementById('tlTopbar');
+const dotsWrap  = document.getElementById('tlDots');
+const turnLeft  = document.getElementById('turnLeft');
+const turnRight = document.getElementById('turnRight');
 
 /* ===== 渲染所有節點（混合 photo 與 act） ===== */
 const photoNodes = [];
@@ -118,29 +120,24 @@ ITEMS.forEach(item=>{
     ? `<img src="${item.src}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.parentNode.classList.add('no-img');this.remove();" data-fallback="${fallback}">`
     : fallback;
 
-  /* 年份標籤：第三幕之後不顯示 */
-  const yrTag = item.year ? `
-    <span class="tl-yr">
-      <span class="yr">${escapeHtml(item.year)}</span>
-      ${item.when ? `<span class="mn">${escapeHtml(item.when)}</span>` : ''}
-    </span>` : '';
-
-  /* 卡片下方的「展品標籤」：有時間就顯示時間，否則顯示幕別 */
+  /* 卡片下方的時間標籤：沒有時間就整列隱藏 */
   const eyebrowText = item.year
     ? (item.when ? `${item.year}・${item.when}` : item.year)
-    : (item.act || '');
+    : '';
+  const eyebrowHtml = eyebrowText
+    ? `<div class="when">${escapeHtml(eyebrowText)}</div>`
+    : '';
 
   const node = document.createElement('div');
   node.className = 'tl-node' + (isFinale ? ' finale' : '') + (item.year ? '' : ' no-year');
   node.dataset.idx = idx;
   node.innerHTML = `
-    ${yrTag}
     <div class="tl-media ${layout}">
       <div class="tl-dot"></div>
       <div class="tl-ph">${photoHtml}</div>
     </div>
     <div class="tl-meta">
-      <div class="when">${escapeHtml(eyebrowText)}</div>
+      ${eyebrowHtml}
       <div class="t">${escapeHtml(item.title)}</div>
       <p class="desc">${escapeHtml(item.desc || '')}</p>
     </div>
@@ -199,9 +196,14 @@ function onScroll(){
   photoNodes.forEach((n, i)=> n.classList.toggle('focus', i === nearest));
 
   const focusItem = photoData[nearest];
-  yearBack.textContent = focusItem.year || focusItem.act || '';
-  yearBack.classList.toggle('is-chapter', !focusItem.year);
+  yearBack.textContent = focusItem.year || '';
+  yearBack.classList.toggle('hidden', !focusItem.year);
   dots.forEach((d, i)=> d.classList.toggle('on', i === nearest));
+
+  /* 時間軸釘住時隱藏左右轉場箭頭 */
+  const pinned = r.top <= 0 && r.bottom >= window.innerHeight;
+  turnLeft  && turnLeft.classList.toggle('show', !pinned);
+  turnRight && turnRight.classList.toggle('show', !pinned);
 }
 addEventListener('scroll', onScroll, {passive:true});
 onScroll();
