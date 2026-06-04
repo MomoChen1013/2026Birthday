@@ -10,7 +10,8 @@ import {
   query, orderBy, doc, runTransaction, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 import {
-  getAuth, signInAnonymously, onAuthStateChanged
+  getAuth, signInAnonymously, signInWithPopup,
+  GoogleAuthProvider, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -29,9 +30,12 @@ const auth = getAuth(app);
 window.fb = {
   db, auth,
   collection, addDoc, onSnapshot, query, orderBy, doc, runTransaction, serverTimestamp,
-  signInAnonymously, onAuthStateChanged,
+  signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged,
 };
 
-signInAnonymously(auth).catch(e => console.warn('[fb] 匿名登入失敗：', e));
+/* 只在還沒登入時才匿名登入；已用 Google 登入過的訪客會保留原帳號 */
+onAuthStateChanged(auth, user => {
+  if(!user) signInAnonymously(auth).catch(e => console.warn('[fb] 匿名登入失敗：', e));
+});
 
 window.dispatchEvent(new Event('fb:ready'));
