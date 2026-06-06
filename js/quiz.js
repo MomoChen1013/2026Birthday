@@ -296,6 +296,10 @@ renderQuiz();
 const MOMO_COMPAT_ANSWERS = COMPAT.map(c => c.momoAnswer);
 const SESSION_COMPAT_KEY  = 'momo.compatSubmitted';
 let compatPicks = new Array(COMPAT.length).fill(null);
+/* 本次 session 剛送出、但 Firestore 還沒回 onSnapshot 時，
+   先把自己的答案疊進長條圖，避免「你的格 0 票、Momo 的格 0 票」的空圖。
+   data:compat 事件回來後會清掉這個 flag、再重畫一次。 */
+let compatJustSubmitted = false;
 
 function letter(i){ return String.fromCharCode(65 + i); }   // 0→A, 1→B…
 
@@ -347,16 +351,19 @@ function renderCompatForm(card){
 
   document.getElementById('compatSubmit').addEventListener('click', ()=>{
     if(compatPicks.some(p => p === null)) return;
-    DataStore.addCompat([...compatPicks]);
+    DataStore.addCompat([...compatPicks]);             // async；不 await
     LS.set('compatLast', [...compatPicks]);
     sessionStorage.setItem(SESSION_COMPAT_KEY, '1');
+    compatJustSubmitted = true;                        // 樂觀疊圖，避免空 bar
     renderCompatChart(card);
     confettiRain();
   });
 }
 
 function renderCompatChart(card){
-  const all     = DataStore.getCompat();
+  let all = DataStore.getCompat();
+  /* 剛送出但 Firestore 還沒回時，把自己的 picks 暫時疊上，bar 才不會是空的 */
+  if(compatJustSubmitted) all = all.concat([compatPicks]);
   const total   = all.length;
   const matches = compatPicks.reduce(
     (acc, pick, i) => acc + (pick === MOMO_COMPAT_ANSWERS[i] ? 1 : 0), 0);
@@ -428,3 +435,12 @@ function renderCompatChart(card){
 }
 
 renderCompat();
+
+/* Firestore 端資料變動時（自己剛送、或別人新送），如果目前顯示的是長條圖就重畫 */
+document.addEventListener('data:compat', ()=>{
+  compatJustSubmitted = false;  // 真資料已到，不再樂觀疊圖
+  const card = document.getElementById('compatCard');
+  if(card && sessionStorage.getItem(SESSION_COMPAT_KEY) === '1'){
+    renderCompatChart(card);
+  }
+});
