@@ -303,6 +303,18 @@ let compatJustSubmitted = false;
 
 function letter(i){ return String.fromCharCode(65 + i); }   // 0→A, 1→B…
 
+/* 判斷 saved 是不是合法的 picks 陣列（5 個 0–3 的整數） */
+function isValidPicks(arr){
+  return Array.isArray(arr) && arr.length === COMPAT.length &&
+    arr.every(v => Number.isInteger(v) && v >= 0 && v < 4);
+}
+/* 判斷 all 裡有沒有跟我的 picks 完全一樣的紀錄 */
+function dataContainsMyPicks(all){
+  return all.some(entry =>
+    Array.isArray(entry) && entry.length === compatPicks.length &&
+    entry.every((v, i) => v === compatPicks[i]));
+}
+
 function renderCompat(){
   const card = document.getElementById('compatCard');
   if(!card) return;
@@ -310,7 +322,13 @@ function renderCompat(){
   // 同個 session 已作答 → 直接看結果
   if(sessionStorage.getItem(SESSION_COMPAT_KEY) === '1'){
     const saved = LS.get('compatLast', null);
-    if(saved){ compatPicks = saved; renderCompatChart(card); return; }
+    if(isValidPicks(saved)){
+      compatPicks = saved;
+      renderCompatChart(card);
+      return;
+    }
+    /* 儲存的 picks 不合法 → 清掉、回到表單 */
+    sessionStorage.removeItem(SESSION_COMPAT_KEY);
   }
   renderCompatForm(card);
 }
@@ -362,8 +380,11 @@ function renderCompatForm(card){
 
 function renderCompatChart(card){
   let all = DataStore.getCompat();
-  /* 剛送出但 Firestore 還沒回時，把自己的 picks 暫時疊上，bar 才不會是空的 */
-  if(compatJustSubmitted) all = all.concat([compatPicks]);
+  /* 剛送出但 Firestore 還沒回時，把自己的 picks 暫時疊上，bar 才不會是空的；
+     真資料如果已經有我的紀錄就不疊，避免雙重計算 */
+  if(compatJustSubmitted && !dataContainsMyPicks(all)){
+    all = all.concat([compatPicks]);
+  }
   const total   = all.length;
   const matches = compatPicks.reduce(
     (acc, pick, i) => acc + (pick === MOMO_COMPAT_ANSWERS[i] ? 1 : 0), 0);
@@ -420,25 +441,28 @@ function renderCompatChart(card){
       <div class="compat-total-hint">目前 <b>${total}</b> 人完成這個調查</div>
     </div>
     ${chartHtml}
-    <p class="compat-foot">💡 你的選擇會標 <span class="lg-you">你</span>；
-       Momo 的選擇會標 <span class="lg-momo">⭐ Momo</span>；
-       你跟 Momo 一致時則是 <span class="lg-match">⭐ 你+Momo</span></p>
     <button class="btn ghost small compat-reset" id="compatReset">重新作答</button>
   `;
 
   document.getElementById('compatReset').addEventListener('click', ()=>{
     sessionStorage.removeItem(SESSION_COMPAT_KEY);
     compatPicks = new Array(COMPAT.length).fill(null);
+    compatJustSubmitted = false;
     renderCompatForm(card);
-    window.scrollTo({top: card.offsetTop - 80, behavior:'smooth'});
+    /* 用 viewport 座標，比 offsetTop 穩定（offsetTop 依 offset parent） */
+    const top = card.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({top, behavior:'smooth'});
   });
 }
 
 renderCompat();
 
-/* Firestore 端資料變動時（自己剛送、或別人新送），如果目前顯示的是長條圖就重畫 */
+/* Firestore 端資料變動時，若我剛送的那筆已經進來就清掉樂觀 flag，
+   並且如果目前顯示的是長條圖就重畫 */
 document.addEventListener('data:compat', ()=>{
-  compatJustSubmitted = false;  // 真資料已到，不再樂觀疊圖
+  if(compatJustSubmitted && dataContainsMyPicks(DataStore.getCompat())){
+    compatJustSubmitted = false;
+  }
   const card = document.getElementById('compatCard');
   if(card && sessionStorage.getItem(SESSION_COMPAT_KEY) === '1'){
     renderCompatChart(card);
