@@ -1,39 +1,22 @@
 /* ============================================================
    quiz.js — 你有多了解 Momo？ + 與 Momo 的契合度
    ============================================================
-   ▸ 題目格式（主測驗）
-     ── 單選題：
-        {type:'single', q:'問題', opts:['A','B','C','D'], answer:0}
-        answer = 正確選項的位置（從 0 開始數，第一個是 0）
+   ▸ 主測驗題型
+     ── 單選：{category:'簡單題', type:'single', q:'問題',
+                opts:['A','B','C','D'], answer:0}
+     ── 多選：{category:'小困難題', type:'multi', q:'問題',
+                opts:[...], answer:[1,3]}（全對才得分）
+     ── 開放：{category:'開放題', type:'open', q:'問題'}
+                ・不計分，回答會寄到 Momo 的悄悄話信箱
 
-     ── 多選題（必須「全選對」才得 1 分；少選 / 多選都算錯）：
-        {type:'multi',  q:'問題', opts:['A','B','C','D','E'], answer:[1,3]}
-        answer = 所有正確答案的位置陣列
+   ▸ category 會顯示在題目上方的徽章；換到新分類時會自動有 "新章節" 動畫
 
-   ▸ 怎麼編題
-     1. 想新增題目 → 複製某一行貼進陣列，改 q / opts / answer
-     2. 想刪題     → 把整行刪掉
-     3. 題目順序、題數都可以自由增減，進度點、計分會自動跟上
-
-   ▸ 寫多選題的小撇步：選項很多時可以用空白切，省得自己加引號
-        opts: '射箭 騎馬 跆拳道 街舞 書法'.split(' ')
-
-   ▸ 怎麼改結算文案
-     最下面 QUIZ_MSG 陣列，依正確率（從高到低）顯示不同訊息
-
-   ▸ COMPAT（5 題價值觀題）使用方式
-     ・這 5 題會「自動同時」出現在兩個地方：
-         a) 主測驗的最後 5 題 — 問題會自動變成 "你覺得對 Momo 來說…"
-            答對 = 跟 Momo 的真實答案一致
-         b) 下方「與 Momo 的契合度」區塊 — 問題會問你自己的看法
-            作答後會儲存、並用長條圖顯示大家的選擇分布
-     ・改 momoAnswer 就會同步影響兩邊
-     ・想新增 / 刪除契合度題目，動 COMPAT 陣列即可，QUIZ 會自動跟上
+   ▸ 答案索引從 0 開始：第一個選項是 0
 ============================================================ */
 if(!requireUser()) { /* requireUser 已導向首頁 */ }
 
 /* ============================================================
-   契合度題庫（兼用：主測驗 + 下方契合度區塊）
+   契合度題庫（只用於下方契合度區塊；不再自動併入主測驗）
    momoAnswer：0=A、1=B、2=C、3=D
 ============================================================ */
 const COMPAT = [
@@ -47,7 +30,7 @@ const COMPAT = [
       '夠用就好，更在意能不能幫助別人或支持理念',
       '讓我體驗新事物、保有選擇與自由的工具',
     ],
-    momoAnswer: 3,  // D
+    momoAnswer: 3,
   },
   {
     emoji:'🌱', title:'人生觀',
@@ -59,7 +42,7 @@ const COMPAT = [
       '達成目標、做出成績，留下屬於自己的成就',
       '安穩平順，少一點波折地把日子過好',
     ],
-    momoAnswer: 0,  // A
+    momoAnswer: 0,
   },
   {
     emoji:'💗', title:'戀愛觀',
@@ -71,7 +54,7 @@ const COMPAT = [
       '對方欣賞我、讓我覺得自己更好、更有自信',
       '兩人能一起冒險、保持新鮮與成長',
     ],
-    momoAnswer: 1,  // B
+    momoAnswer: 1,
   },
   {
     emoji:'🏠', title:'家庭觀',
@@ -83,7 +66,7 @@ const COMPAT = [
       '彼此包容照顧，把愛無條件給家人',
       '尊重每個人的獨立與自由，各自精彩',
     ],
-    momoAnswer: 3,  // D
+    momoAnswer: 3,
   },
   {
     emoji:'💼', title:'職場觀',
@@ -95,79 +78,54 @@ const COMPAT = [
       '能發揮創意、自由探索新做法',
       '穩定有保障、流程清楚可預期',
     ],
-    momoAnswer: 2,  // C
+    momoAnswer: 2,
   },
 ];
 
 /* ============================================================
-   主測驗題庫
+   主測驗題庫（分三大類 + 開放題）
 ============================================================ */
 const QUIZ = [
-  /* ============ 單選題（共 10 題） ============ */
+  /* ============ 簡單題 ============ */
+  {category:'簡單題', type:'single', q:'Momo 的職業是？',
+    opts:['工程師','UIUX／產品設計師','平面設計師','行銷企劃'], answer:1},
+  {category:'簡單題', type:'single', q:'我最近在忙的大事？',
+    opts:['準備換工作','做產品','籌備活動','以上皆是'], answer:3},
+  {category:'簡單題', type:'single', q:'我手機桌布通常是？',
+    opts:['我家貓咪','旅行風景','低調的男人照','朋友合照'], answer:2},
+  {category:'簡單題', type:'single', q:'哪一個不會在我每日例行中？',
+    opts:['吃保健食品','看劇','記帳','當鏟屎官'], answer:3},
+  {category:'簡單題', type:'single', q:'我家貓咪最近很愛？',
+    opts:['睡整天','討摸','亂翻東西','看著我工作'], answer:1},
+  {category:'簡單題', type:'single', q:'我最近看的日劇是？',
+    opts:['地獄占星師','最後的英雄','九條的大罪','逆轉球團'], answer:1},
+  {category:'簡單題', type:'single', q:'我最愛的古裝劇是？',
+    opts:['逐玉','慶餘年','蓮花樓','皓鑭傳'], answer:1},
 
-  // ── 1～3：原本就有，是 Momo 本人的真實答案 ──
-  {type:'single', q:'Momo 最喜歡的運動是？',
-    opts:['空中瑜伽','跑步','重訓','游泳'], answer:0},
-
-  {type:'single', q:'Momo 一個月大概讀幾本書？',
-    opts:['1 本','2 本','4 本左右','完全沒空讀'], answer:2},
-
-  {type:'single', q:'Momo 的職業是？',
-    opts:['工程師','UX／產品設計師','老師','行銷企劃'], answer:1},
-
-  // ── 4～10：以下為★範本★，請依 Momo 真實答案修改 ──
-  {type:'single', q:'Momo 的星座是？',
-    opts:['雙子','處女','天秤','雙魚'], answer:0},
-
-  {type:'single', q:'Momo 最喜歡的顏色是？',
-    opts:['粉紅','薰衣草紫','天空藍','奶油黃'], answer:1},
-
-  {type:'single', q:'Momo 最愛的甜點是？',
-    opts:['千層','草莓蛋糕','馬卡龍','焦糖布蕾'], answer:0},
-
-  {type:'single', q:'Momo 平常最常喝的飲料是？',
-    opts:['拿鐵','抹茶拿鐵','氣泡水','鮮奶茶'], answer:0},
-
-  {type:'single', q:'Momo 一週運動幾次？',
-    opts:['1 次','2–3 次','4–5 次','幾乎天天'], answer:1},
-
-  {type:'single', q:'Momo 最理想的旅行方式是？',
-    opts:['海邊度假','山林健行','城市探險','在家躺平'], answer:0},
-
-  {type:'single', q:'Momo 最喜歡的季節是？',
-    opts:['春','夏','秋','冬'], answer:0},
-
-  /* ============ COMPAT 5 題自動加入主測驗（問題改成「你覺得對 Momo 來說…」） ============ */
-  ...COMPAT.map(c => ({
-    type: 'single',
-    q: c.aboutMomo,
-    opts: c.opts,
-    answer: c.momoAnswer,
-  })),
-
-  /* ============ 多選題（共 5 題・全對才得分） ============ */
-
-  // ── 1. Momo 提供的真實題 ✓ ──
-  {type:'multi', q:'Momo 沒學過下列哪些？',
+  /* ============ 小困難題 ============ */
+  {category:'小困難題', type:'single', q:'我壓力大時的放鬆方式？',
+    opts:['運動（跑步、騎腳踏車）','做料理','安靜獨處看劇','到處找朋友聊天'], answer:1},
+  {category:'小困難題', type:'multi', q:'Momo 沒學過下列哪些？',
     opts: '射箭 騎馬 跆拳道 街舞 書法 素描 鋼琴 芭蕾 設計 拉花 甜點 羊毛氈 鉤針'.split(' '),
     answer:[2, 7, 12]},
+  {category:'小困難題', type:'multi', q:'Momo 沒做過哪些事？',
+    opts: '開車 夜釣 參加遊行 露營 看鋼管秀 去音樂祭 攀岩 浮潛 搭小飛機 去雪山 穿旗袍 跑大隊接力 帶團出國'.split(' '),
+    answer:[2, 5, 10]},
+  {category:'小困難題', type:'single', q:'去過哪打工賺錢？',
+    opts:['日本','澳洲','韓國','小琉球'], answer:1},
 
-  // ── 2～5：以下為★範本★，請依 Momo 真實答案修改 ──
-  {type:'multi', q:'Momo 養過下列哪些寵物？',
-    opts: '貓 狗 兔子 倉鼠 烏龜 魚 鸚鵡 刺蝟'.split(' '),
-    answer:[0, 1]},
+  /* ============ 困難題 ============ */
+  {category:'困難題', type:'single', q:'我「沒有」過哪一個的夢想？',
+    opts:['開一間店','養很多貓','環遊世界','在日本生活一段時間'], answer:1},
+  {category:'困難題', type:'single', q:'我做決定最看重的是？',
+    opts:['對未來有沒有幫助','自己的內心平安','會不會影響重要的人','是不是「對的事」'], answer:1},
+  {category:'困難題', type:'single', q:'我最不想變成的樣子？',
+    opts:['失去熱情、變得麻木','只看現實、放棄理想','對人冷漠','隨波逐流沒方向'], answer:0},
+  {category:'困難題', type:'single', q:'如果我突然消沉，最可能因為？',
+    opts:['工作／未來卡關','跟在乎的人有摩擦','覺得自己不夠好','太累沒休息'], answer:1},
 
-  {type:'multi', q:'Momo 喜歡下列哪些料理？',
-    opts: '日式 韓式 義式 墨西哥 泰式 中式 法式 越式'.split(' '),
-    answer:[0, 2, 4]},
-
-  {type:'multi', q:'Momo 去過下列哪些國家？',
-    opts: '日本 韓國 泰國 越南 英國 法國 美國 加拿大'.split(' '),
-    answer:[0, 1, 2]},
-
-  {type:'multi', q:'Momo 喜歡看哪些類型的影集？',
-    opts: '喜劇 推理 紀錄片 戀愛 奇幻 恐怖 動作 科幻'.split(' '),
-    answer:[0, 1, 3]},
+  /* ============ 開放題（不計分；答案會寄到悄悄話信箱） ============ */
+  {category:'開放題', type:'open', q:'你覺得我這一年最大的改變？'},
 ];
 
 /* ============================================================
@@ -185,14 +143,27 @@ const QUIZ_MSG = [
    以下為渲染與計分邏輯，編題不用動
 ============================================================ */
 let qi = 0, qscore = 0;
-const quizCard = document.getElementById('quizCard');
+const quizCard      = document.getElementById('quizCard');
+const SCOREABLE_TOTAL = QUIZ.filter(q => q.type !== 'open').length;
+
+function categoryBadge(item, isNew){
+  return `<div class="q-cat-row">
+    <span class="q-category${isNew ? ' is-new' : ''}">${escapeHtml(item.category || '')}</span>
+  </div>`;
+}
 
 function renderQuiz(){
   if(qi >= QUIZ.length){ renderQuizResult(); return; }
-  const item    = QUIZ[qi];
-  const isMulti = item.type === 'multi';
+  const item   = QUIZ[qi];
+  const prev   = qi > 0 ? QUIZ[qi-1] : null;
+  const isNew  = !prev || prev.category !== item.category;
 
   const dots = QUIZ.map((_,i)=>`<div class="q-dot ${i<qi?'done':''}"></div>`).join('');
+  const cat  = categoryBadge(item, isNew);
+
+  if(item.type === 'open'){ renderOpenQ(item, cat, dots); return; }
+
+  const isMulti = item.type === 'multi';
   const opts = item.opts.map((o,i)=>`<button class="q-opt" data-i="${i}">${escapeHtml(o)}</button>`).join('');
   const badge = isMulti
     ? '<span class="q-type multi">多選・全對才得分</span>'
@@ -202,6 +173,7 @@ function renderQuiz(){
     : '';
 
   quizCard.innerHTML = `
+    ${cat}
     <div class="q-progress">${dots}</div>
     <div class="q-type-row">${badge}</div>
     <div class="q-text"><span class="q-num">Q${qi+1}.</span> ${escapeHtml(item.q)}</div>
@@ -219,6 +191,50 @@ function renderQuiz(){
       btn.addEventListener('click', ()=> gradeSingle(item, optBtns, +btn.dataset.i));
     });
   }
+}
+
+/* 開放題：寫下文字 → 寄到 Momo 的悄悄話信箱 */
+function renderOpenQ(item, cat, dots){
+  quizCard.innerHTML = `
+    ${cat}
+    <div class="q-progress">${dots}</div>
+    <div class="q-type-row"><span class="q-type open">開放題・寄到 Momo 信箱 💌</span></div>
+    <div class="q-text"><span class="q-num">Q${qi+1}.</span> ${escapeHtml(item.q)}</div>
+    <div class="q-open">
+      <textarea id="qOpenText" class="q-open-textarea" maxlength="500"
+                placeholder="寫下你想說的話…（最多 500 字）"></textarea>
+      <div class="q-open-foot">送出後會記錄到 Momo 的悄悄話信箱～</div>
+    </div>
+    <div class="q-open-btns">
+      <button class="btn ghost small q-open-skip" id="qOpenSkip">跳過</button>
+      <button class="btn small q-submit" id="qOpenSubmit" disabled>送出 💌</button>
+    </div>
+  `;
+
+  const ta  = document.getElementById('qOpenText');
+  const btn = document.getElementById('qOpenSubmit');
+  ta.addEventListener('input', ()=>{ btn.disabled = !ta.value.trim(); });
+
+  document.getElementById('qOpenSkip').addEventListener('click', ()=>{ qi++; renderQuiz(); });
+
+  btn.addEventListener('click', async ()=>{
+    const text = ta.value.trim();
+    if(!text) return;
+    btn.disabled = true;
+    try{
+      await DataStore.addLetter({
+        name: me_user.name,
+        icon: me_user.icon,
+        text: `【測驗開放題】${item.q}\n\n${text}`,
+      });
+      spawnFloat('💌', innerWidth/2, innerHeight*0.7);
+    }catch(e){
+      console.warn('開放題寄信失敗', e);
+    }
+    qi++; renderQuiz();
+  });
+
+  setTimeout(()=>ta.focus(), 80);
 }
 
 function gradeSingle(item, optBtns, picked){
@@ -256,7 +272,7 @@ function gradeMulti(item, optBtns){
 }
 
 function renderQuizResult(){
-  const total = QUIZ.length;
+  const total = SCOREABLE_TOTAL;
   const ratio = total ? qscore / total : 0;
   const msg   = (QUIZ_MSG.find(m => ratio >= m.min) || {text:''}).text;
 
