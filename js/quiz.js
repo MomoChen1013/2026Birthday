@@ -420,9 +420,9 @@ function renderCompatChart(card){
       <div class="compat-total-hint">目前 <b>${total}</b> 人完成這個調查</div>
     </div>
     ${chartHtml}
-    <p class="compat-foot">💡 跟你選相同答案的長條是 <span class="legend-you">粉色</span>；
-       跟 Momo 一致時會變 <span class="legend-match">綠色 ⭐</span>；
-       Momo 自己的選擇是 <span class="legend-momo">金色 ⭐</span></p>
+    <p class="compat-foot">💡 你的選擇會標 <span class="lg-you">你</span>；
+       Momo 的選擇會標 <span class="lg-momo">⭐ Momo</span>；
+       你跟 Momo 一致時則是 <span class="lg-match">⭐ 你+Momo</span></p>
     <button class="btn ghost small compat-reset" id="compatReset">重新作答</button>
   `;
 
