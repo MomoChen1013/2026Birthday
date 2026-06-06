@@ -1,34 +1,19 @@
 /* ============================================================
    字體（輕熟高級排版）
-   Playfair Display → 英文標題
+   Playfair Display → 英文標題（從 Google Fonts CDN）
    GenJyuuGothic   → 中文 UI（圓角思源黑體；自行下載放 fonts/）
-   Noto Sans TC    → GenJyuuGothic 缺字時的後備
+   Noto Sans TC    → GenJyuuGothic 缺字時的後備（Google Fonts CDN）
    ChenYuluoyan    → 手寫感（祝福卡、拍立得、信件；OFL 可商用）
-   下載與檔名規則：fonts/ChenYuluoyan-Thin.woff2、fonts/GenJyuuGothic-{Light|Regular|Bold}.woff2
 ============================================================ */
 @font-face{
   font-family:'ChenYuluoyan';
-  src:url('../fonts/ChenYuluoyan-Thin.woff2') format('woff2'),
-      url('../fonts/ChenYuluoyan-Thin.ttf') format('truetype');
+  src:url('../fonts/ChenYuluoyan-Thin.ttf') format('truetype');
   font-display:swap;
 }
 @font-face{
   font-family:'GenJyuuGothic';
-  src:url('../fonts/GenJyuuGothic-Light.woff2') format('woff2'),
-      url('../fonts/GenJyuuGothic-Light.ttf') format('truetype');
-  font-weight:300; font-display:swap;
-}
-@font-face{
-  font-family:'GenJyuuGothic';
-  src:url('../fonts/GenJyuuGothic-Regular.woff2') format('woff2'),
-      url('../fonts/GenJyuuGothic-Regular.ttf') format('truetype');
-  font-weight:400 500; font-display:swap;
-}
-@font-face{
-  font-family:'GenJyuuGothic';
-  src:url('../fonts/GenJyuuGothic-Bold.woff2') format('woff2'),
-      url('../fonts/GenJyuuGothic-Bold.ttf') format('truetype');
-  font-weight:700 900; font-display:swap;
+  src:url('../fonts/GenJyuuGothic-Regular.ttf') format('truetype');
+  font-weight:300 900; font-display:swap;
 }
 
 /* ============================================================
@@ -44,7 +29,7 @@
   --gold:#c9a06b; --gold-deep:#a8854a; --gold-soft:#e3ca9a;
   --font-display:'Playfair Display','GenJyuuGothic','Noto Sans TC',serif;
   --font-body:'GenJyuuGothic','Noto Sans TC',sans-serif;
-  --font-hand:'ChenYuluoyan','Long Cang','Noto Sans TC',cursive;
+  --font-hand:'ChenYuluoyan','Noto Sans TC',cursive;
 }
 body[data-theme="lavender"]{
   --primary:#b9a5e3; --primary-deep:#9a82d4; --primary-soft:#ece5fa;
