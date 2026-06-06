@@ -3,11 +3,11 @@
    Playfair Display → 英文標題（從 Google Fonts CDN）
    GenJyuuGothic   → 中文 UI（圓角思源黑體；自行下載放 fonts/）
    Noto Sans TC    → GenJyuuGothic 缺字時的後備（Google Fonts CDN）
-   ChenYuluoyan    → 手寫感（祝福卡、拍立得、信件；OFL 可商用）
+   setofont    → 手寫感（祝福卡、拍立得、信件；OFL 可商用）
 ============================================================ */
 @font-face{
-  font-family:'ChenYuluoyan';
-  src:url('../fonts/ChenYuluoyan-Thin.woff2') format('woff2');
+  font-family:'setofont';
+  src:url('../fonts/setofont.ttf') format('ttf');
   font-display:swap;
 }
 @font-face{
@@ -29,7 +29,7 @@
   --gold:#c9a06b; --gold-deep:#a8854a; --gold-soft:#e3ca9a;
   --font-display:'Playfair Display','GenJyuuGothic','Noto Sans TC',serif;
   --font-body:'GenJyuuGothic','Noto Sans TC',sans-serif;
-  --font-hand:'ChenYuluoyan','Noto Sans TC',cursive;
+  --font-hand:'setofont','Noto Sans TC',cursive;
 }
 body[data-theme="lavender"]{
   --primary:#b9a5e3; --primary-deep:#9a82d4; --primary-soft:#ece5fa;
