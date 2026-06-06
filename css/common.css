@@ -7,12 +7,12 @@
 ============================================================ */
 @font-face{
   font-family:'ChenYuluoyan';
-  src:url('../fonts/ChenYuluoyan-Thin.ttf') format('truetype');
+  src:url('../fonts/ChenYuluoyan-Thin.woff2') format('woff2');
   font-display:swap;
 }
 @font-face{
   font-family:'GenJyuuGothic';
-  src:url('../fonts/GenJyuuGothic-Regular.ttf') format('truetype');
+  src:url('../fonts/GenJyuuGothic-Regular.woff2') format('woff2');
   font-weight:300 900; font-display:swap;
 }
 
