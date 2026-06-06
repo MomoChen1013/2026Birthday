@@ -114,7 +114,6 @@ ITEMS.forEach(item=>{
 
   const idx       = photoData.length;
   const isFinale  = item.finale === true;
-  const layout    = (idx % 2 === 0) ? 'tall' : 'wide';
   const fallback  = isFinale ? '🤍' : '📷';
   const photoHtml = item.src
     ? `<img src="${item.src}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.parentNode.classList.add('no-img');this.remove();" data-fallback="${fallback}">`
@@ -131,14 +130,15 @@ ITEMS.forEach(item=>{
   const node = document.createElement('div');
   node.className = 'tl-node' + (isFinale ? ' finale' : '') + (item.year ? '' : ' no-year');
   node.dataset.idx = idx;
+  /* 交錯的微微傾斜（拍立得隨手擺放感） */
+  node.style.setProperty('--tilt', (idx % 2 === 0 ? '-1.4deg' : '1.6deg'));
   node.innerHTML = `
-    <div class="tl-media ${layout}">
-      <div class="tl-dot"></div>
+    <div class="tl-media">
       <div class="tl-ph">${photoHtml}</div>
+      <div class="tl-cap">${escapeHtml(item.title)}</div>
     </div>
     <div class="tl-meta">
       ${eyebrowHtml}
-      <div class="t">${escapeHtml(item.title)}</div>
       <p class="desc">${escapeHtml(item.desc || '')}</p>
     </div>
   `;
@@ -166,6 +166,10 @@ function recalc(){
 }
 recalc();
 addEventListener('resize', ()=>{ recalc(); onScroll(); });
+/* 拍立得寬度跟著照片實際尺寸走，圖片載入完要重算總寬度 */
+track.addEventListener('load', e => {
+  if(e.target && e.target.tagName === 'IMG'){ recalc(); onScroll(); }
+}, true);
 
 function onScroll(){
   const r = tlSec.getBoundingClientRect();
