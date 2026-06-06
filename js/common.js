@@ -50,19 +50,25 @@ const DataStore = {
   },
 
   _subscribe(){
-    const { db, collection, onSnapshot, query, orderBy, doc } = window.fb;
-    const sub = (name, key) => {
-      const q = query(collection(db, name), orderBy('time', 'asc'));
-      onSnapshot(q, snap => {
+    const { db, auth, collection, onSnapshot, query, orderBy, where, doc } = window.fb;
+    const uid = auth.currentUser && auth.currentUser.uid;
+
+    const sub = (key, qFn) => {
+      onSnapshot(qFn(), snap => {
         this['_'+key] = snap.docs.map(d => ({ id:d.id, ...d.data() }));
         document.dispatchEvent(new CustomEvent('data:'+key));
-      }, err => console.warn('[DataStore] onSnapshot', name, err));
+      }, err => console.warn('[DataStore] onSnapshot', key, err));
     };
-    sub('wishes',    'wishes');
-    sub('letters',   'letters');
-    sub('collected', 'collected');
-    sub('cakes',     'cakes');
-    sub('compat',    'compat');
+
+    /* 全站共用（大家都看得到） */
+    sub('wishes',  () => query(collection(db, 'wishes'),  orderBy('time', 'asc')));
+    sub('letters', () => query(collection(db, 'letters'), orderBy('time', 'asc')));
+    sub('cakes',   () => query(collection(db, 'cakes'),   orderBy('time', 'asc')));
+    sub('compat',  () => query(collection(db, 'compat'),  orderBy('time', 'asc')));
+
+    /* 抽卡收藏：per-uid，只訂閱自己的卡
+       （不加 orderBy 以免要建立複合索引；排序在 getCollected() 由前端做） */
+    sub('collected', () => query(collection(db, 'collected'), where('uid', '==', uid)));
 
     /* 愛心是單一計數器，存在 meta/hearts */
     onSnapshot(doc(db, 'meta', 'hearts'), snap => {
@@ -81,8 +87,15 @@ const DataStore = {
     return addDoc(collection(db, 'letters'), { ...l, time: l.time || Date.now() });
   },
   async addCollected(c){
-    const { db, collection, addDoc } = window.fb;
-    return addDoc(collection(db, 'collected'), { ...c, time: Date.now() });
+    const { db, auth, collection, addDoc } = window.fb;
+    const uid = auth.currentUser ? auth.currentUser.uid : null;
+    const userName = (typeof me_user !== 'undefined' && me_user) ? me_user.name : '';
+    return addDoc(collection(db, 'collected'), {
+      ...c,
+      uid,                  // ← 用 Firebase Auth UID 隔離（每位訪客各自獨立）
+      userName,             // ← 順便存名字，方便日後查
+      time: Date.now(),
+    });
   },
   async addCake(c){
     const { db, collection, addDoc } = window.fb;
@@ -107,7 +120,8 @@ const DataStore = {
   getLetters()    { return this._letters; },
   getLetterCount(){ return this._letters.length; },
   getHearts()     { return this._hearts; },
-  getCollected()  { return this._collected; },
+  /* 抽卡收藏按時間排序（snapshot 沒帶 orderBy，所以在這裡排） */
+  getCollected()  { return this._collected.slice().sort((a,b)=>(a.time||0)-(b.time||0)); },
   getCakes()      { return this._cakes; },
   /* compat 早期是「直接陣列」，現在統一包成 {answers:[...]}，取出時還原 */
   getCompat()     { return this._compat.map(c => c.answers || c); },

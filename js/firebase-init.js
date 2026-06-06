@@ -7,7 +7,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
   getFirestore, collection, addDoc, onSnapshot,
-  query, orderBy, doc, runTransaction, serverTimestamp
+  query, orderBy, where, doc, runTransaction, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 import {
   getAuth, signInAnonymously, signInWithPopup,
@@ -29,7 +29,7 @@ const auth = getAuth(app);
 
 window.fb = {
   db, auth,
-  collection, addDoc, onSnapshot, query, orderBy, doc, runTransaction, serverTimestamp,
+  collection, addDoc, onSnapshot, query, orderBy, where, doc, runTransaction, serverTimestamp,
   signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged,
 };
 
