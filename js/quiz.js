@@ -313,8 +313,8 @@ function renderCompat(){
 
 function renderCompatForm(card){
   card.innerHTML = `
-    <p class="compat-intro">回答下面 5 題，看看你的價值觀和 Momo 多接近 ✦<br>
-      <small>送出後會匿名記錄、和大家的選擇一起做成長條圖</small></p>
+    <p class="compat-intro">與 Mo 的契合度，看看你的價值觀和 Mo 多接近 <br>✦<br>
+      </p>
     ${COMPAT.map((c, qi) => `
       <div class="compat-q" data-qi="${qi}">
         <div class="compat-q-title">
