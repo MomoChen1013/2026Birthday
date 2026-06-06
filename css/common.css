@@ -97,6 +97,8 @@ body{
 .btn.small{width:auto;padding:11px 20px;font-size:15px;}
 .btn.ghost{background:#fff;color:var(--primary-deep);box-shadow:inset 0 0 0 2px var(--primary);}
 
+.divider-div{height:24px
+   }
 /* ============================================================
    子場景頁面共用
 ============================================================ */
