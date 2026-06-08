@@ -237,9 +237,26 @@ footer{text-align:center;color:var(--ink-soft);font-size:12px;padding:30px 0 10p
 /* 右上小頭像（子場景用） */
 .me-mini{position:fixed;top:16px;right:16px;z-index:903;display:inline-flex;align-items:center;gap:8px;
   padding:6px 14px 6px 6px;border-radius:999px;background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  box-shadow:0 6px 16px var(--shadow);border:1px solid #fff;font-size:13px;color:var(--ink);}
+  box-shadow:0 6px 16px var(--shadow);border:1px solid #fff;font-size:13px;color:var(--ink);
+  transition:transform .15s ease;}
 .me-mini .ic{width:28px;height:28px;line-height:28px;text-align:center;font-size:16px;border-radius:50%;background:var(--primary-soft);}
 .me-mini .nm{font-weight:700;}
+.me-mini.clickable{cursor:pointer;}
+.me-mini.clickable:hover{transform:translateY(-1px);box-shadow:0 8px 20px var(--shadow);}
+.me-mini.clickable::after{content:'▾';font-size:11px;color:var(--ink-soft);margin-left:2px;}
+
+/* me-mini 下拉選單 */
+.me-pop{position:absolute;top:calc(100% + 8px);right:0;min-width:160px;display:none;
+  background:#fff;border-radius:14px;border:1px solid var(--gold-soft);
+  box-shadow:0 10px 26px var(--shadow);padding:6px;
+  animation:mePop .18s ease;}
+.me-pop.open{display:block;}
+@keyframes mePop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.me-pop-item{display:block;width:100%;text-align:left;border:none;background:transparent;
+  font-family:var(--font-body);font-size:13.5px;color:var(--ink);
+  padding:9px 12px;border-radius:8px;cursor:pointer;}
+.me-pop-item:hover{background:var(--primary-soft);color:var(--primary-deep);font-weight:600;}
+
 @media(max-width:560px){
   .me-mini{padding:4px 10px 4px 4px;font-size:12px;}
   .me-mini .ic{width:24px;height:24px;line-height:24px;font-size:14px;}

@@ -115,6 +115,15 @@ const DataStore = {
     return this._hearts + 1;
   },
 
+  /* ===== 壽星專用：清空某個 collection（用於重置票數） ===== */
+  async wipeCollection(name){
+    const { db, collection, getDocs, deleteDoc, doc } = window.fb;
+    const snap = await getDocs(collection(db, name));
+    /* 並行刪除（小資料量 OK；超過幾百筆建議改用 writeBatch） */
+    await Promise.all(snap.docs.map(d => deleteDoc(doc(db, name, d.id))));
+    return snap.docs.length;
+  },
+
   /* ===== 讀取（同步回本地快取） ===== */
   getWishes()     { return this._wishes; },
   getLetters()    { return this._letters; },
@@ -138,6 +147,21 @@ const ICONS = ['🎀','🌸','🌷','🐰','🐣','🦋','⭐','🍓','☁️','
 let me_user = LS.get('user', null) || { name:'朋友', icon:'🎀' };
 function saveUser(u){ me_user = u; LS.set('user', u); }
 function clearUser(){ me_user = { name:'朋友', icon:'🎀' }; localStorage.removeItem('momo.user'); }
+
+/* 登出：清掉本地 user / session、Firebase 也 signOut，最後回到入場頁
+   （firebase-init 會在沒有 user 時自動匿名登入新 uid，等於是一個全新的訪客） */
+async function logout(){
+  try{
+    if(window.fb && window.fb.auth && window.fb.signOut){
+      await window.fb.signOut(window.fb.auth);
+    }
+  }catch(e){ console.warn('[logout] signOut failed', e); }
+  clearUser();
+  try{ sessionStorage.clear(); }catch{}
+  /* 清掉 compat 暫存（避免下個 user 看到上一位的答案） */
+  try{ localStorage.removeItem('momo.compatLast'); }catch{}
+  location.href = 'index.html';
+}
 
 /* 子場景：沒登入就丟回大廳 */
 function requireUser(){
@@ -335,11 +359,31 @@ function bindCommonUI(){
   if(inboxClose) inboxClose.addEventListener('click', ()=>inboxModal.classList.remove('open'));
   if(inboxModal) inboxModal.addEventListener('click', e=>{ if(e.target===inboxModal) inboxModal.classList.remove('open'); });
 
-  /* 子場景：顯示右上小頭像（lobby 不顯示） */
+  /* 子場景：右上小頭像（點開有登出選單；lobby 沒有 #meMini 就跳過） */
   const meMini = document.getElementById('meMini');
   if(meMini){
     meMini.querySelector('.ic').textContent = me_user.icon || '🎀';
     meMini.querySelector('.nm').textContent = me_user.name || '朋友';
+
+    /* 點頭像 → toggle 下拉選單 */
+    meMini.classList.add('clickable');
+    const pop = document.createElement('div');
+    pop.className = 'me-pop';
+    pop.innerHTML = `
+      <button class="me-pop-item" data-act="logout">🚪 登出（換人玩）</button>
+    `;
+    meMini.appendChild(pop);
+
+    meMini.addEventListener('click', e=>{
+      if(e.target.closest('.me-pop')) return;   // 點選單本身不 toggle
+      pop.classList.toggle('open');
+    });
+    /* 點頁面其他地方收起 */
+    document.addEventListener('click', e=>{
+      if(!meMini.contains(e.target)) pop.classList.remove('open');
+    });
+    /* 登出 */
+    pop.querySelector('[data-act="logout"]').addEventListener('click', logout);
   }
 
   /* 顯示場景背景照 */

@@ -7,10 +7,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
   getFirestore, collection, addDoc, onSnapshot,
-  query, orderBy, where, doc, runTransaction, serverTimestamp
+  query, orderBy, where, doc, runTransaction, serverTimestamp,
+  getDocs, deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 import {
-  getAuth, signInAnonymously, signInWithPopup,
+  getAuth, signInAnonymously, signInWithPopup, signOut,
   GoogleAuthProvider, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
@@ -29,8 +30,10 @@ const auth = getAuth(app);
 
 window.fb = {
   db, auth,
-  collection, addDoc, onSnapshot, query, orderBy, where, doc, runTransaction, serverTimestamp,
-  signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged,
+  collection, addDoc, onSnapshot, query, orderBy, where, doc,
+  runTransaction, serverTimestamp, getDocs, deleteDoc,
+  signInAnonymously, signInWithPopup, signOut,
+  GoogleAuthProvider, onAuthStateChanged,
 };
 
 /* 只在還沒登入時才匿名登入；已用 Google 登入過的訪客會保留原帳號 */

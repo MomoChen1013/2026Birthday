@@ -434,6 +434,11 @@ function renderCompatChart(card){
     `;
   }).join('');
 
+  /* 壽星專屬：清空所有票數的按鈕（網址加 #momo 才出現） */
+  const wipeBtn = (typeof isOwnerVisitor === 'function' && isOwnerVisitor())
+    ? `<button class="btn ghost small compat-wipe" id="compatWipe">🗑 清空所有票數（壽星專用）</button>`
+    : '';
+
   card.innerHTML = `
     <div class="compat-result-head">
       <div class="compat-score">${matches} <small>／</small> ${COMPAT.length}</div>
@@ -442,6 +447,7 @@ function renderCompatChart(card){
     </div>
     ${chartHtml}
     <button class="btn ghost small compat-reset" id="compatReset">重新作答</button>
+    ${wipeBtn}
   `;
 
   document.getElementById('compatReset').addEventListener('click', ()=>{
@@ -453,9 +459,55 @@ function renderCompatChart(card){
     const top = card.getBoundingClientRect().top + window.scrollY - 80;
     window.scrollTo({top, behavior:'smooth'});
   });
+
+  /* 壽星專用：清空整個 compat collection */
+  const wipeEl = document.getElementById('compatWipe');
+  if(wipeEl){
+    wipeEl.addEventListener('click', async ()=>{
+      if(!confirm('確定要清空所有人的契合度作答？\n（無法復原；自己的本地紀錄也會一併清掉）')) return;
+      wipeEl.disabled = true;
+      wipeEl.textContent = '清空中…';
+      try{
+        const n = await DataStore.wipeCollection('compat');
+        sessionStorage.removeItem(SESSION_COMPAT_KEY);
+        localStorage.removeItem('momo.compatLast');
+        compatPicks = new Array(COMPAT.length).fill(null);
+        compatJustSubmitted = false;
+        alert(`已清空 ${n} 筆契合度作答 ✨`);
+        renderCompatForm(card);
+      }catch(e){
+        console.error('[wipeCompat]', e);
+        alert('清空失敗：' + (e.message || e) + '\n（檢查 Firestore Rules 是否允許壽星刪除）');
+        wipeEl.disabled = false;
+        wipeEl.textContent = '🗑 清空所有票數（壽星專用）';
+      }
+    });
+  }
 }
 
 renderCompat();
+
+/* ============================================================
+   左右轉箭頭：作答中不顯示，捲到契合度或結算才出現
+   （quizCard 在視窗內 + 還沒做完主測驗 → 藏；其他狀況 → 顯示）
+============================================================ */
+const turnNavEls = document.querySelectorAll('.turn-nav');
+function updateTurnNav(){
+  if(!turnNavEls.length) return;
+  const r = quizCard.getBoundingClientRect();
+  const quizInView = r.bottom > 80 && r.top < window.innerHeight * 0.6;
+  const stillAnswering = qi < QUIZ.length;
+  const show = !(stillAnswering && quizInView);
+  turnNavEls.forEach(el => el.classList.toggle('show', show));
+}
+addEventListener('scroll', updateTurnNav, {passive:true});
+addEventListener('resize', updateTurnNav);
+/* 每次 renderQuiz/renderQuizResult 切換完也要更新一次 */
+const _origRenderQuiz       = renderQuiz;
+const _origRenderQuizResult = renderQuizResult;
+renderQuiz       = function(){ _origRenderQuiz();       updateTurnNav(); };
+renderQuizResult = function(){ _origRenderQuizResult(); updateTurnNav(); };
+updateTurnNav();
 
 /* Firestore 端資料變動時，若我剛送的那筆已經進來就清掉樂觀 flag，
    並且如果目前顯示的是長條圖就重畫 */
