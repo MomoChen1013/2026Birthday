@@ -14,10 +14,10 @@ const CAKES = [
   {name:'抹茶戚風蛋糕',   emoji:'🍵', img:'images/cakes-02.png'},
   {name:'草莓奶油戚風',   emoji:'🍓', img:'images/cakes-03.png'},
   {name:'水果派',         emoji:'🥧', img:'images/cakes-04.png'},
-  {name:'蘋果派',         emoji:'🍎', img:'images/cakes-05.png'},
-  {name:'焦糖布蕾',       emoji:'🍮', img:'images/cakes-06.png'},
-  {name:'蒙布朗',         emoji:'🌰', img:'images/cakes-07.png'},
-  {name:'伯爵綠葡萄蛋糕', emoji:'🍇', img:'images/cakes-08.png'},
+  {name:'蘋果派',         emoji:'🍎', img:'images/cakes-08.png'},
+  {name:'焦糖布蕾',       emoji:'🍮', img:'images/cakes-07.png'},
+  {name:'蒙布朗',         emoji:'🌰', img:'images/cakes-06.png'},
+  {name:'伯爵綠葡萄蛋糕', emoji:'🍇', img:'images/cakes-05.png'},
 ];
 const WISHES_TXT = ['生日快樂！永遠幸福～','願望都成真 ✦','新的一歲閃閃發光 ✨','平安喜樂，一帆風順 ♡'];
 
