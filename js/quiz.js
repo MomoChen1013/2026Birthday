@@ -105,10 +105,10 @@ const QUIZ = [
   /* ============ 小困難題 ============ */
   {category:'小困難題', type:'single', q:'我壓力大時的放鬆方式？',
     opts:['運動（跑步、騎腳踏車）','做料理','安靜獨處看劇','到處找朋友聊天'], answer:1},
-  {category:'小困難題', type:'multi', q:'Momo 沒學過下列哪些？',
+  {category:'小困難題', type:'multi', q:'Momo 沒學過下列哪些？答案有3項',
     opts: '射箭 騎馬 跆拳道 街舞 書法 素描 鋼琴 芭蕾 設計 拉花 甜點 羊毛氈 鉤針'.split(' '),
     answer:[2, 7, 12]},
-  {category:'小困難題', type:'multi', q:'Momo 沒做過哪些事？',
+  {category:'小困難題', type:'multi', q:'Momo 沒做過哪些事？答案有3項',
     opts: '開車 夜釣 參加遊行 露營 看鋼管秀 去音樂祭 攀岩 浮潛 搭小飛機 去雪山 穿旗袍 跑大隊接力 帶團出國'.split(' '),
     answer:[2, 5, 10]},
   {category:'小困難題', type:'single', q:'去過哪打工賺錢？',
