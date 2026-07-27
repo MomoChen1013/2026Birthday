@@ -20,40 +20,44 @@
    主題色票（右下角可即時切換）
 ============================================================ */
 :root{
-  --ink:#5b4a6e;
-  --ink-soft:#8a7ba0;
-  --line:rgba(91,74,110,.12);
-  --shadow:rgba(120,90,150,.12);
+  --ink:#5a4a38;           /* 溫暖棕墨（婚禮質感） */
+  --ink-soft:#9c8a72;
+  --line:rgba(90,74,56,.12);
+  --shadow:rgba(150,120,80,.14);
   --radius:14px;
   --radius-sm:10px;
-  --gold:#c9a06b; --gold-deep:#a8854a; --gold-soft:#e3ca9a;
+  --gold:#c9a86a; --gold-deep:#a8854a; --gold-soft:#e7d3a6;
   --font-display:'Playfair Display','GenJyuuGothic','Noto Sans TC',serif;
   --font-body:'GenJyuuGothic','Noto Sans TC',sans-serif;
   --font-hand:'setofont','Noto Sans TC',cursive;
 }
-body[data-theme="lavender"]{
-  --primary:#b9a5e3; --primary-deep:#9a82d4; --primary-soft:#ece5fa;
-  --secondary:#ffb3c6; --accent:#a6d8f0; --sun:#fce38a;
-  --bg1:#fbf7ff; --bg2:#f3edff; --bg-blob1:#ddccf7; --bg-blob2:#ffd6e3; --bg-blob3:#cdeaf7;
-  --card:#fffdfb;
+/* 香檳金（預設・經典優雅） */
+body[data-theme="champagne"]{
+  --primary:#c9a86a; --primary-deep:#a8854a; --primary-soft:#f3e8d3;
+  --secondary:#d8b98a; --accent:#c2b280; --sun:#f0dca0;
+  --bg1:#fdfbf6; --bg2:#f6efe3; --bg-blob1:#efe3cd; --bg-blob2:#f3e2d0; --bg-blob3:#e9dcc4;
+  --card:#fffefb;
 }
-body[data-theme="sakura"]{
-  --primary:#ffabc4; --primary-deep:#ff85a8; --primary-soft:#ffe3ec;
-  --secondary:#c9b6f0; --accent:#a6d8f0; --sun:#ffe08a;
-  --bg1:#fff8fa; --bg2:#ffeef3; --bg-blob1:#ffd0de; --bg-blob2:#e7d7fb; --bg-blob3:#d4eef9;
+/* 霧玫瑰（浪漫玫瑰金） */
+body[data-theme="blush"]{
+  --primary:#d98fa0; --primary-deep:#c26e82; --primary-soft:#f6e2e6;
+  --secondary:#e0b58f; --accent:#c9a86a; --sun:#f0dca0;
+  --bg1:#fdf7f6; --bg2:#f8ebe9; --bg-blob1:#f0d3d8; --bg-blob2:#ecdcc9; --bg-blob3:#e7d3d0;
   --card:#fffdfc;
 }
-body[data-theme="sky"]{
-  --primary:#8fcdec; --primary-deep:#5fb4e0; --primary-soft:#dff1fb;
-  --secondary:#ffb3c6; --accent:#c9b6f0; --sun:#fce38a;
-  --bg1:#f6fcff; --bg2:#e7f5fd; --bg-blob1:#c3e6f7; --bg-blob2:#ffd6e3; --bg-blob3:#e2d7fb;
-  --card:#fcfeff;
+/* 鼠尾草綠（森系清新） */
+body[data-theme="sage"]{
+  --primary:#9aae86; --primary-deep:#7a9068; --primary-soft:#e6ede0;
+  --secondary:#c9a86a; --accent:#b7c4a6; --sun:#eadfb6;
+  --bg1:#fafcf7; --bg2:#eef3e8; --bg-blob1:#d8e3cc; --bg-blob2:#eee5cf; --bg-blob3:#dfe8d4;
+  --card:#fdfefb;
 }
-body[data-theme="butter"]{
-  --primary:#f7d472; --primary-deep:#eebf45; --primary-soft:#fdf3cf;
-  --secondary:#ffabc4; --accent:#a6d8f0; --sun:#ffe08a;
-  --bg1:#fffdf3; --bg2:#fff7df; --bg-blob1:#fbe9a8; --bg-blob2:#ffd6e3; --bg-blob3:#cdeaf7;
-  --card:#fffef9;
+/* 霧霾藍（沉靜典雅） */
+body[data-theme="dusk"]{
+  --primary:#8fa3bd; --primary-deep:#6d84a1; --primary-soft:#e3e9f0;
+  --secondary:#c9a86a; --accent:#a9bcd0; --sun:#ecdfb6;
+  --bg1:#f9fbfd; --bg2:#eaf0f6; --bg-blob1:#d2ddea; --bg-blob2:#ece3cf; --bg-blob3:#dae2ec;
+  --card:#fcfdfe;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -218,10 +222,10 @@ body{
 .theme-pop.open{display:flex;}
 .theme-dot{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid #fff;box-shadow:0 3px 8px var(--shadow);transition:transform .2s;}
 .theme-dot:hover{transform:scale(1.12);}
-.t-lavender{background:linear-gradient(135deg,#b9a5e3,#ffb3c6);}
-.t-sakura{background:linear-gradient(135deg,#ffabc4,#c9b6f0);}
-.t-sky{background:linear-gradient(135deg,#8fcdec,#ffb3c6);}
-.t-butter{background:linear-gradient(135deg,#f7d472,#ffabc4);}
+.t-champagne{background:linear-gradient(135deg,#c9a86a,#f3e8d3);}
+.t-blush{background:linear-gradient(135deg,#d98fa0,#e0b58f);}
+.t-sage{background:linear-gradient(135deg,#9aae86,#c9a86a);}
+.t-dusk{background:linear-gradient(135deg,#8fa3bd,#c9a86a);}
 
 /* 全畫面特效 canvas */
 #fx{position:fixed;inset:0;z-index:800;pointer-events:none;}

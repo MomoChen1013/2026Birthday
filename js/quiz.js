@@ -1,5 +1,5 @@
 /* ============================================================
-   quiz.js — 你有多了解 Momo？ + 與 Momo 的契合度
+   quiz.js — 你有多了解新人？ + 與新人的契合度
    ============================================================
    ▸ 主測驗題型
      ── 單選：{category:'簡單題', type:'single', q:'問題',
@@ -7,7 +7,7 @@
      ── 多選：{category:'小困難題', type:'multi', q:'問題',
                 opts:[...], answer:[1,3]}（全對才得分）
      ── 開放：{category:'開放題', type:'open', q:'問題'}
-                ・不計分，回答會寄到 Momo 的悄悄話信箱
+                ・不計分，回答會寄到新人的悄悄話信箱
 
    ▸ category 會顯示在題目上方的徽章；換到新分類時會自動有 "新章節" 動畫
 
@@ -132,11 +132,11 @@ const QUIZ = [
    結算文案：依正確率顯示不同訊息（從高到低判斷）
 ============================================================ */
 const QUIZ_MSG = [
-  {min:1.0,  text:'你是 Momo 的頭號粉絲！💜'},
-  {min:0.8,  text:'根本是 Momo 本人吧 ✨'},
-  {min:0.6,  text:'超級了解 Momo～ ♡'},
+  {min:1.0,  text:'你是新人的頭號粉絲！💛'},
+  {min:0.8,  text:'根本是新人本人吧 ✨'},
+  {min:0.6,  text:'超級了解這對新人～ ♡'},
   {min:0.3,  text:'還不錯，再多認識一點吧！'},
-  {min:0,    text:'沒關係，今天開始更認識 Momo ♡'},
+  {min:0,    text:'沒關係，今天開始更認識這對新人 ♡'},
 ];
 
 /* ============================================================
@@ -198,12 +198,12 @@ function renderOpenQ(item, cat, dots){
   quizCard.innerHTML = `
     ${cat}
     <div class="q-progress">${dots}</div>
-    <div class="q-type-row"><span class="q-type open">開放題・寄到 Momo 信箱 💌</span></div>
+    <div class="q-type-row"><span class="q-type open">開放題・寄到新人信箱 💌</span></div>
     <div class="q-text"><span class="q-num">Q${qi+1}.</span> ${escapeHtml(item.q)}</div>
     <div class="q-open">
       <textarea id="qOpenText" class="q-open-textarea" maxlength="500"
                 placeholder="寫下你想說的話…（最多 500 字）"></textarea>
-      <div class="q-open-foot">送出後會記錄到 Momo 的悄悄話信箱～</div>
+      <div class="q-open-foot">送出後會記錄到新人的悄悄話信箱～</div>
     </div>
     <div class="q-open-btns">
       <button class="btn ghost small q-open-skip" id="qOpenSkip">跳過</button>
@@ -335,7 +335,7 @@ function renderCompat(){
 
 function renderCompatForm(card){
   card.innerHTML = `
-    <p class="compat-intro">與 Mo 的契合度，看看你的價值觀和 Mo 多接近 <br>✦<br>
+    <p class="compat-intro">與新人的契合度，看看你的價值觀和新人多接近 <br>✦<br>
       </p>
     ${COMPAT.map((c, qi) => `
       <div class="compat-q" data-qi="${qi}">
@@ -407,9 +407,9 @@ function renderCompatChart(card){
       else if(isYou)      cls = 'you';
       else if(isMomo)     cls = 'momo';
       const badges =
-        (isYou && isMomo) ? '<span class="badge match">⭐ 你+Momo</span>' :
+        (isYou && isMomo) ? '<span class="badge match">⭐ 你+新人</span>' :
         isYou             ? '<span class="badge you">你</span>' :
-        isMomo            ? '<span class="badge momo">⭐ Momo</span>' : '';
+        isMomo            ? '<span class="badge momo">⭐ 新人</span>' : '';
 
       return `
         <div class="compat-bar-row ${cls}" title="${escapeHtml(opt)}">
@@ -434,15 +434,15 @@ function renderCompatChart(card){
     `;
   }).join('');
 
-  /* 壽星專屬：清空所有票數的按鈕（網址加 #momo 才出現） */
+  /* 新人專屬：清空所有票數的按鈕（網址加 WED.ownerKey 才出現） */
   const wipeBtn = (typeof isOwnerVisitor === 'function' && isOwnerVisitor())
-    ? `<button class="btn ghost small compat-wipe" id="compatWipe">🗑 清空所有票數（壽星專用）</button>`
+    ? `<button class="btn ghost small compat-wipe" id="compatWipe">🗑 清空所有票數（新人專用）</button>`
     : '';
 
   card.innerHTML = `
     <div class="compat-result-head">
       <div class="compat-score">${matches} <small>／</small> ${COMPAT.length}</div>
-      <div class="compat-score-hint">與 Momo 的答案一致 ✨</div>
+      <div class="compat-score-hint">與新人的答案一致 ✨</div>
       <div class="compat-total-hint">目前 <b>${total}</b> 人完成這個調查</div>
     </div>
     ${chartHtml}
@@ -460,7 +460,7 @@ function renderCompatChart(card){
     window.scrollTo({top, behavior:'smooth'});
   });
 
-  /* 壽星專用：清空整個 compat collection */
+  /* 新人專用：清空整個 compat collection */
   const wipeEl = document.getElementById('compatWipe');
   if(wipeEl){
     wipeEl.addEventListener('click', async ()=>{
@@ -477,9 +477,9 @@ function renderCompatChart(card){
         renderCompatForm(card);
       }catch(e){
         console.error('[wipeCompat]', e);
-        alert('清空失敗：' + (e.message || e) + '\n（檢查 Firestore Rules 是否允許壽星刪除）');
+        alert('清空失敗：' + (e.message || e) + '\n（檢查 Firestore Rules 是否允許新人刪除）');
         wipeEl.disabled = false;
-        wipeEl.textContent = '🗑 清空所有票數（壽星專用）';
+        wipeEl.textContent = '🗑 清空所有票數（新人專用）';
       }
     });
   }

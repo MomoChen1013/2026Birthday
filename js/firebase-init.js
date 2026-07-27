@@ -15,6 +15,9 @@ import {
   GoogleAuthProvider, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
+/* ★ 婚禮版建議：到 Firebase 另建一個新專案，把下面 config 換掉，
+   避免婚禮的祝福/信件跟原本生日站的資料混在同一個資料庫。
+   （沿用現有 config 也能跑，只是資料會共用同一個 Firestore） */
 const firebaseConfig = {
   apiKey: "AIzaSyAjmsRisQP7tR-cQGi4EqxdAaY2CeJe4_E",
   authDomain: "birthday-mo2026.firebaseapp.com",

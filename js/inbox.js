@@ -1,11 +1,11 @@
 /* ============================================================
-   inbox.js — 隱藏的悄悄話信箱頁
-   - 密碼門：0613（純前端門檻，不是高強度保護）
+   inbox.js — 隱藏的悄悄話信箱頁（新人專屬）
+   - 密碼門：預設讀 js/config.js 的 WED.password（純前端門檻，不是高強度保護）
    - 解鎖狀態存 sessionStorage：同個分頁重整不必再輸入
    - 關閉分頁就會失效，下次重新進入需要再次輸入
 ============================================================ */
-const PASSWORD = '0613';
-const SESSION_KEY = 'momo.inboxUnlocked';
+const PASSWORD = (window.WED && window.WED.password) || '1010';
+const SESSION_KEY = 'wed.inboxUnlocked';
 
 const pwGate   = document.getElementById('pwGate');
 const pwInput  = document.getElementById('pwInput');
@@ -84,7 +84,7 @@ function renderInbox(){
       <div class="ib-empty">
         <span class="em">📭</span>
         目前還沒有人投信進來<br>
-        等朋友們從祝福牆寫信給妳，這裡就會出現囉～
+        等賓客們從祝福牆寫信給你們，這裡就會出現囉～
       </div>`;
     return;
   }

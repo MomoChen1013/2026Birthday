@@ -1,12 +1,12 @@
 /* ============================================================
-   Momo's Day — 共用 JS
+   婚禮網站 — 共用 JS
    提供：
      - DataStore（localStorage 持久化）
      - me_user（名字 + icon）
      - 主題切換
      - 特效（煙火 / 彩帶 / 鞭炮 / 金箔 / 飄浮 emoji）
-     - BGM（生日歌音樂盒版）
-     - 壽星信箱（網址加 #momo 才出現）
+     - BGM（婚禮進行曲・華格納〈婚禮合唱〉音樂盒版）
+     - 新人專屬信箱（網址加 WED.ownerKey 才出現）
      - 子場景的回大廳 / 左右轉導覽自動套用
      - escapeHtml 等小工具
 ============================================================ */
@@ -115,7 +115,7 @@ const DataStore = {
     return this._hearts + 1;
   },
 
-  /* ===== 壽星專用：清空某個 collection（用於重置票數） ===== */
+  /* ===== 新人專用：清空某個 collection（用於重置票數） ===== */
   async wipeCollection(name){
     const { db, collection, getDocs, deleteDoc, doc } = window.fb;
     const snap = await getDocs(collection(db, name));
@@ -143,7 +143,7 @@ else window.addEventListener('fb:ready', () => DataStore.init());
 /* ============================================================
    使用者（名字 + 隨機 icon）
 ============================================================ */
-const ICONS = ['🎀','🌸','🌷','🐰','🐣','🦋','⭐','🍓','☁️','🌈','🍯','🐥','🧁','🌼','💐','🍑','🫧','🪽'];
+const ICONS = ['💍','🤍','🌷','🕊️','🥂','💐','✨','🌿','🍾','💒','🎀','🌸','💌','🫶','🥰','👰','🤵','💕'];
 let me_user = LS.get('user', null) || { name:'朋友', icon:'🎀' };
 function saveUser(u){ me_user = u; LS.set('user', u); }
 function clearUser(){ me_user = { name:'朋友', icon:'🎀' }; localStorage.removeItem('momo.user'); }
@@ -180,7 +180,7 @@ function setTheme(t){
   LS.set('theme', t);
 }
 function initTheme(){
-  const saved = LS.get('theme', 'lavender');
+  const saved = LS.get('theme', 'champagne');
   document.body.dataset.theme = saved;
 }
 initTheme();
@@ -197,7 +197,7 @@ function initFx(){
   resize(); addEventListener('resize', resize);
 }
 
-const PCOLORS=['#ff9ec4','#b9a5e3','#a6d8f0','#fce38a','#9be7a0','#ffb3c6'];
+const PCOLORS=['#c9a86a','#e7d3a6','#f3e8d3','#d8b98a','#d98fa0','#fffdf5'];
 function addParts(x,y,n,opt={}){
   for(let i=0;i<n;i++){
     const a=Math.random()*Math.PI*2, sp=(opt.speed||4)*(0.4+Math.random());
@@ -257,15 +257,16 @@ function spawnFloat(emoji,x,y){
 }
 
 /* ============================================================
-   BGM：用 Web Audio 合成「生日快樂歌」音樂盒版
+   BGM：用 Web Audio 合成「婚禮進行曲」音樂盒版
+   （華格納〈婚禮合唱〉Here Comes the Bride）
 ============================================================ */
 let audioCtx=null, bgmOn=false, bgmTimer=null;
-const _NOTE={G4:392.00,A4:440.00,B4:493.88,C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:783.99};
+const _NOTE={E4:329.63,F4:349.23,G4:392.00,A4:440.00,B4:493.88,C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:783.99};
 const _MELODY=[
-  ['G4',.5],['G4',.5],['A4',1],['G4',1],['C5',1],['B4',2],
-  ['G4',.5],['G4',.5],['A4',1],['G4',1],['D5',1],['C5',2],
-  ['G4',.5],['G4',.5],['G5',1],['E5',1],['C5',1],['B4',1],['A4',2],
-  ['F5',.5],['F5',.5],['E5',1],['C5',1],['D5',1],['C5',2.5],
+  ['G4',.5],['C5',1.5],['C5',.5],['C5',1],       // Here comes the bride
+  ['G4',.5],['A4',1],  ['C5',.5],['B4',1.5],     // all dressed in white
+  ['G4',.5],['C5',1.5],['C5',.5],['E5',1],       // sweetly the bride
+  ['D5',.5],['C5',1],  ['B4',.5],['C5',2.5],     // comes down the aisle
 ];
 function playNote(freq,start,dur){
   const o=audioCtx.createOscillator(), g=audioCtx.createGain();
@@ -297,9 +298,9 @@ function stopBGM(){
 }
 
 /* ============================================================
-   壽星信箱：網址加 #momo 才出現
+   新人專屬信箱：網址加 WED.ownerKey（預設 #couple）才出現
 ============================================================ */
-const OWNER_KEY = '#momo';
+const OWNER_KEY = (window.WED && window.WED.ownerKey) || '#couple';
 function isOwnerVisitor(){
   return location.hash === OWNER_KEY || /[?&]owner/.test(location.search);
 }
@@ -312,7 +313,7 @@ function renderInbox(){
   if(!list) return;
   const letters=DataStore.getLetters().slice().reverse();
   if(!letters.length){
-    list.innerHTML=`<div class="inbox-empty">目前還沒有信件 💭<br>等朋友們投信進來，這裡就會出現囉～<br><br>（接上 Firebase 後，大家寄的信會自動收進這個信箱）</div>`;
+    list.innerHTML=`<div class="inbox-empty">目前還沒有信件 💭<br>等賓客們投信進來，這裡就會出現囉～<br><br>（接上 Firebase 後，大家寄的悄悄話會自動收進這個信箱）</div>`;
     return;
   }
   list.innerHTML=letters.map(l=>`
@@ -348,7 +349,7 @@ function bindCommonUI(){
     bgmFab.addEventListener('click', ()=>{ bgmOn ? stopBGM() : startBGM(); });
   }
 
-  /* 壽星信箱 */
+  /* 新人信箱 */
   const ownerFab  = document.getElementById('ownerFab');
   const inboxModal= document.getElementById('inboxModal');
   const inboxClose= document.getElementById('inboxClose');
@@ -370,7 +371,7 @@ function bindCommonUI(){
     const pop = document.createElement('div');
     pop.className = 'me-pop';
     pop.innerHTML = `
-      <button class="me-pop-item" data-act="logout">🚪 登出（換人玩）</button>
+      <button class="me-pop-item" data-act="logout">🚪 登出（換一位賓客）</button>
     `;
     meMini.appendChild(pop);
 

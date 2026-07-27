@@ -39,6 +39,8 @@
 ============================================================ */
 if(!requireUser()) { /* requireUser 已導向首頁 */ }
 
+/* ★ 以下 52 張為範例卡（沿用原作 Momo 的生活照）
+   換成你們的婚紗照 / 生活照：把 art 換成 images/ 內的新圖、name/desc 改成你們的故事即可 */
 const CARDS = [
   {art:'images/cards-01.png', name:'看劇前的Mo', rarity:'N', desc:'大愛CMusical'},
   {art:'images/cards-02.png', name:'覺得自己可愛的Mo', rarity:'N', desc:'是拍貼機✨'},

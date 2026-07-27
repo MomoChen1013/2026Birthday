@@ -19,7 +19,7 @@ const CAKES = [
   {name:'蒙布朗',         emoji:'🌰', img:'images/cakes-06.png'},
   {name:'伯爵綠葡萄蛋糕', emoji:'🍇', img:'images/cakes-05.png'},
 ];
-const WISHES_TXT = ['生日快樂！永遠幸福～','願望都成真 ✦','新的一歲閃閃發光 ✨','平安喜樂，一帆風順 ♡'];
+const WISHES_TXT = ['新婚快樂，白頭偕老～','願你們永遠幸福 ✦','有情人終成眷屬 ✨','百年好合，永浴愛河 ♡','甜甜蜜蜜，長長久久 🍯'];
 
 let chosen = CAKES[0];
 let step   = 'idle';

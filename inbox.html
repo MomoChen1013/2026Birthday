@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/common.css">
 <link rel="stylesheet" href="css/inbox.css">
 </head>
-<body data-theme="lavender">
+<body data-theme="champagne">
 
 <div class="bg-decor"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <canvas id="fx"></canvas>
@@ -23,8 +23,8 @@
 <div class="overlay" id="pwGate">
   <div class="gate-card">
     <div class="ribbon">✦ PRIVATE ✦</div>
-    <h1>📬 Momo's Inbox</h1>
-    <div class="sub">這是壽星專屬的悄悄話信箱<br>請輸入密碼進入</div>
+    <h1>📬 新人信箱</h1>
+    <div class="sub">這是新人專屬的悄悄話信箱<br>請輸入密碼進入</div>
     <div class="field">
       <input id="pwInput" type="password" inputmode="numeric" maxlength="8" placeholder="輸入密碼" autocomplete="off">
     </div>
@@ -36,8 +36,8 @@
 <!-- ============ 信箱本體（解鎖後顯示） ============ -->
 <section class="panel page-fade" data-panel="inbox" id="inboxPage" hidden>
   <div class="scene-hero inbox-hero">
-    <div class="sh-title">📬 Momo's Inbox</div>
-    <div class="sh-sub">朋友們寄給你的悄悄話，全部都在這裡</div>
+    <div class="sh-title">📬 新人信箱</div>
+    <div class="sh-sub">賓客們寄給你們的悄悄話，全部都在這裡</div>
     <div class="scroll-cue"><span>向下展信</span><span class="arrow">↓</span></div>
   </div>
 
@@ -46,32 +46,33 @@
       <span class="ib-counter-em">💌</span>
       <div>
         <div class="ib-counter-num"><b id="ibCount">0</b> 封悄悄話</div>
-        <div class="ib-counter-hint">朋友寫給壽星的私訊・只有妳看得到</div>
+        <div class="ib-counter-hint">賓客寫給新人的悄悄話・只有你們看得到</div>
       </div>
       <button class="ib-lock" id="ibLock" title="鎖回信箱">🔒</button>
     </div>
 
     <div class="inbox-page-list" id="ibList"></div>
 
-    <footer>made with ♡ for Momo・#2026 Momo's Day</footer>
+    <footer>made with ♡ for Ethan & Momo・#EthanMomo2026</footer>
   </div>
 </section>
 
-<a class="back-lobby" id="backLobby" href="index.html">🏠 回到派對現場</a>
+<a class="back-lobby" id="backLobby" href="index.html">🏠 回到婚禮現場</a>
 
 <!-- 浮動控制 -->
 <div class="floating">
   <div class="theme-pop" id="themePop">
-    <div class="theme-dot t-lavender" data-theme="lavender" title="薰衣草紫"></div>
-    <div class="theme-dot t-sakura"   data-theme="sakura"   title="櫻花粉"></div>
-    <div class="theme-dot t-sky"      data-theme="sky"      title="晴空藍"></div>
-    <div class="theme-dot t-butter"   data-theme="butter"   title="奶油黃"></div>
+    <div class="theme-dot t-champagne" data-theme="champagne" title="香檳金"></div>
+    <div class="theme-dot t-blush"   data-theme="blush"   title="霧玫瑰"></div>
+    <div class="theme-dot t-sage"      data-theme="sage"      title="鼠尾草綠"></div>
+    <div class="theme-dot t-dusk"   data-theme="dusk"   title="霧霾藍"></div>
   </div>
   <button class="fab" id="themeFab" title="換主題色">🎨</button>
-  <button class="fab" id="bgmFab"   title="生日歌 BGM">🔇</button>
+  <button class="fab" id="bgmFab"   title="婚禮進行曲">🔇</button>
 </div>
 
 <script type="module" src="js/firebase-init.js"></script>
+<script src="js/config.js"></script>
 <script src="js/common.js"></script>
 <script src="js/inbox.js"></script>
 </body>

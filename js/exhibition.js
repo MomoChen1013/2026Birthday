@@ -8,6 +8,10 @@
 ============================================================ */
 if(!requireUser()) { /* requireUser 已導向首頁 */ }
 
+/* ★ 以下時間軸為範例（沿用原作 Momo 的人生故事）
+   換成你們的戀愛里程碑：相遇 → 曖昧 → 交往 → 求婚 → 結婚
+   每筆：{n:編號, type:'photo', year:'年份', when:'說明', src:'images/xxx.png', title:'標題', desc:'描述', act:'第幾幕'}
+   幕別分隔卡：{type:'act', label:'第一幕', subtitle:'我們的相遇', n:編號} */
 const ITEMS = [
   /* ===== 序章 ===== */
   {n:1,  type:'photo', year:'2026', when:'現在・31 歲',
